@@ -1,0 +1,56 @@
+# ==============================================================================
+# SEO Structure Inspector - Archivo .gitignore oficial de producción
+# ==============================================================================
+
+# --- Dependencias de Terceros ---
+/vendor/
+/node_modules/
+
+# --- Compilaciones y Empaquetados de Producción ---
+/*.zip
+/dist/
+/build/
+
+# --- Cachés de Herramientas de Desarrollo y Testing ---
+/.phpunit.result.cache
+/.phpunit.cache/
+/.php-cs-fixer.cache
+/.eslintcache
+/tests/_output/
+/tests/_support/_generated/
+
+# --- Configuraciones de IDEs y Editores ---
+/.idea/
+/.vscode/
+/*.suo
+/*.ntvs*
+/*.njsproj
+/*.sln
+/*.swp
+/*~
+.project
+.settings/
+.buildpath
+
+# --- Archivos del Sistema Operativo ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# --- Archivos Temporales y de Pruebas Locales ---
+/test.php
+/scratch/
+/tmp/
+.env
+.env.local
+.env.*.local
+
+# --- Logs del Sistema y Servidor ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

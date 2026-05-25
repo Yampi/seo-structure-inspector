@@ -1,0 +1,522 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SEO Structure Inspector 0.5.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-16 00:00+0000\n"
+"PO-Revision-Date: 2026-05-16 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: seo-si\n"
+
+msgid "Recommended Schema field"
+msgstr "Campo recomendado de Schema"
+
+msgid "Schema %s: missing recommended field \"%s\"."
+msgstr "Schema %s: falta el campo recomendado \"%s\"."
+
+msgid "Unknown"
+msgstr "Desconocido"
+
+msgid "unknown"
+msgstr "desconocido"
+
+msgid "Completing recommended Schema fields increases eligibility for rich results and helps search engines and AI systems understand and cite your content correctly."
+msgstr "Completar los campos recomendados de Schema aumenta la elegibilidad para resultados enriquecidos y ayuda a los motores de búsqueda y sistemas de IA a entender y citar tu contenido correctamente."
+
+msgid "Schema completeness"
+msgstr "Completitud de Schema"
+
+msgid "Schema %s: basic fields look complete."
+msgstr "Schema %s: los campos básicos parecen completos."
+
+msgid "A complete Schema block is more likely to qualify for rich results and be reliably interpreted by crawlers."
+msgstr "Un bloque de Schema completo tiene más probabilidades de calificar para resultados enriquecidos y ser interpretado de forma confiable por los crawlers."
+
+msgid "Semantic content grouping"
+msgstr "Agrupación semántica del contenido"
+
+msgid "<article> inside <section> detected."
+msgstr "Se detectó <article> dentro de <section>."
+
+msgid "Semantic grouping improves structure for accessibility, crawling, and AI extraction."
+msgstr "La agrupación semántica mejora la estructura para accesibilidad, rastreo y extracción por IA."
+
+msgid "Valid HTML body"
+msgstr "Body HTML válido"
+
+msgid "Exactly one <body> tag was found."
+msgstr "Se encontró exactamente una etiqueta <body>."
+
+msgid "Valid HTML reduces crawler confusion and prevents rendering edge cases."
+msgstr "Un HTML válido reduce la confusión de los crawlers y evita problemas de renderizado."
+
+msgid "Found %d <body> tags (should be 1)."
+msgstr "Se encontraron %d etiquetas <body> (debería ser 1)."
+
+msgid "Invalid HTML can confuse crawlers and affect rendering, which can reduce SEO and AI extraction quality."
+msgstr "Un HTML inválido puede confundir a los crawlers y afectar el renderizado, lo que puede reducir el SEO y la calidad de extracción por IA."
+
+msgid "Ensure the page output contains exactly one <body> element."
+msgstr "Asegúrate de que la salida de la página contenga exactamente un elemento <body>."
+
+msgid "Check your theme/page builder templates for duplicated wrappers."
+msgstr "Revisa las plantillas de tu tema/page builder por envolturas duplicadas."
+
+msgid "Single H1"
+msgstr "H1 único"
+
+msgid "Exactly one <h1> was found: \"%s\"."
+msgstr "Se encontró exactamente un <h1>: \"%s\"."
+
+msgid "Exactly one <h1> was found."
+msgstr "Se encontró exactamente un <h1>."
+
+msgid "The H1 is a primary on-page topic signal used by search engines and AI systems to understand what the page is about."
+msgstr "El H1 es una señal principal del tema en la página, usada por motores de búsqueda y sistemas de IA para entender de qué trata la página."
+
+msgid "No <h1> was found on the page."
+msgstr "No se encontró ningún <h1> en la página."
+
+msgid "Without a clear main heading, relevance signals are weaker and it is harder for crawlers and AI to summarize the page."
+msgstr "Sin un heading principal claro, las señales de relevancia son más débiles y es más difícil para crawlers e IA resumir la página."
+
+msgid "Add a single <h1> that matches the main topic of the page."
+msgstr "Agrega un solo <h1> que coincida con el tema principal de la página."
+
+msgid "Use <h2>/<h3> for section headings, not additional <h1> tags."
+msgstr "Usa <h2>/<h3> para headings de secciones, no <h1> adicionales."
+
+msgid "Found %d <h1> tags (should be 1)."
+msgstr "Se encontraron %d etiquetas <h1> (debería ser 1)."
+
+msgid "Multiple H1 tags can dilute topic focus and reduce clarity for both search engines and AI systems."
+msgstr "Varios H1 pueden diluir el enfoque del tema y reducir la claridad tanto para motores de búsqueda como para sistemas de IA."
+
+msgid "Keep one <h1> for the main page title."
+msgstr "Mantén un solo <h1> para el título principal de la página."
+
+msgid "Convert other H1 tags into <h2> or <h3> depending on the hierarchy."
+msgstr "Convierte los otros H1 en <h2> o <h3> según la jerarquía."
+
+msgid "Heading hierarchy"
+msgstr "Jerarquía de headings"
+
+msgid "<h2> headings detected (%d)."
+msgstr "Se detectaron headings <h2> (%d)."
+
+msgid "A logical hierarchy helps crawlers and AI segment content into understandable sections."
+msgstr "Una jerarquía lógica ayuda a los crawlers y a la IA a segmentar el contenido en secciones comprensibles."
+
+msgid "There are <h3> headings without any preceding <h2> headings (broken hierarchy)."
+msgstr "Hay headings <h3> sin headings <h2> previos (jerarquía rota)."
+
+msgid "Heading hierarchy has issues."
+msgstr "La jerarquía de headings tiene problemas."
+
+msgid "Skipping heading levels reduces structural clarity, which can harm SEO and AI extraction."
+msgstr "Saltar niveles de headings reduce la claridad estructural, lo que puede afectar el SEO y la extracción por IA."
+
+msgid "Structure headings in order: h1 → h2 → h3 without skipping levels."
+msgstr "Estructura los headings en orden: h1 → h2 → h3 sin saltar niveles."
+
+msgid "If you need a sub-section under an H1, start with an H2."
+msgstr "Si necesitas una subsección debajo de un H1, comienza con un H2."
+
+msgid "Semantic footer"
+msgstr "Footer semántico"
+
+msgid "A <footer> element was found."
+msgstr "Se encontró un elemento <footer>."
+
+msgid "Semantic landmarks improve accessibility and document structure for crawlers."
+msgstr "Los landmarks semánticos mejoran la accesibilidad y la estructura del documento para los crawlers."
+
+msgid "No <footer> element was found."
+msgstr "No se encontró ningún elemento <footer>."
+
+msgid "Without semantic landmarks, page structure is less explicit for accessibility tools and crawlers."
+msgstr "Sin landmarks semánticos, la estructura de la página es menos explícita para herramientas de accesibilidad y crawlers."
+
+msgid "Add a semantic <footer> for the page or site footer."
+msgstr "Agrega un <footer> semántico para el pie de página de la página o del sitio."
+
+msgid "If a page builder uses generic <div> wrappers, consider adjusting the template or adding a hook to output <footer>."
+msgstr "Si un page builder usa envolturas genéricas <div>, considera ajustar la plantilla o agregar un hook para imprimir <footer>."
+
+msgid "Main content landmark"
+msgstr "Landmark de contenido principal"
+
+msgid "A <main> element was found."
+msgstr "Se encontró un elemento <main>."
+
+msgid "The <main> landmark helps crawlers and AI identify the primary content versus navigation and boilerplate."
+msgstr "El landmark <main> ayuda a los crawlers y a la IA a identificar el contenido principal frente a navegación y contenido repetitivo."
+
+msgid "No <main> element was found."
+msgstr "No se encontró ningún elemento <main>."
+
+msgid "When the main content is not clearly delimited, AI and crawlers may misinterpret navigation or footer content as part of the main topic."
+msgstr "Cuando el contenido principal no está claramente delimitado, la IA y los crawlers pueden interpretar navegación o footer como parte del tema principal."
+
+msgid "Wrap the primary page content in a <main> element."
+msgstr "Envuelve el contenido principal de la página en un elemento <main>."
+
+msgid "If your theme/page builder does not output <main>, consider updating the template or adding it via a hook."
+msgstr "Si tu tema/page builder no imprime <main>, considera actualizar la plantilla o añadirlo mediante un hook."
+
+msgid "Semantic sections"
+msgstr "Secciones semánticas"
+
+msgid "Semantic tags (<section> and/or <article>) were detected."
+msgstr "Se detectaron etiquetas semánticas (<section> y/o <article>)."
+
+msgid "Semantic chunking helps crawlers and AI segment and interpret content more accurately."
+msgstr "La segmentación semántica ayuda a los crawlers y a la IA a dividir e interpretar el contenido con mayor precisión."
+
+msgid "No <section> or <article> elements were detected."
+msgstr "No se detectaron elementos <section> ni <article>."
+
+msgid "Without semantic blocks, pages are harder to process into meaningful chunks for search engines and AI systems."
+msgstr "Sin bloques semánticos, las páginas son más difíciles de procesar en fragmentos significativos para motores de búsqueda y sistemas de IA."
+
+msgid "Wrap related content blocks in <section> or <article>."
+msgstr "Envuelve bloques de contenido relacionado en <section> o <article>."
+
+msgid "Use headings inside those blocks to reinforce structure."
+msgstr "Usa headings dentro de esos bloques para reforzar la estructura."
+
+msgid "Paragraph structure"
+msgstr "Estructura de párrafos"
+
+msgid "<p> tags detected (%d)."
+msgstr "Se detectaron etiquetas <p> (%d)."
+
+msgid "Paragraph markup makes content easier to parse for SEO, accessibility, and AI extraction."
+msgstr "El marcado de párrafos hace que el contenido sea más fácil de procesar para SEO, accesibilidad y extracción por IA."
+
+msgid "No <p> tags were found."
+msgstr "No se encontraron etiquetas <p>."
+
+msgid "If content is not marked up as paragraphs, it becomes harder to process and can reduce readability signals and extraction quality."
+msgstr "Si el contenido no está marcado como párrafos, se vuelve más difícil de procesar y puede reducir señales de legibilidad y calidad de extracción."
+
+msgid "Use <p> tags for body text instead of plain text nodes or generic containers."
+msgstr "Usa etiquetas <p> para el texto del cuerpo en lugar de nodos de texto sueltos o contenedores genéricos."
+
+msgid "Ensure your editor/page builder outputs semantic paragraph markup."
+msgstr "Asegúrate de que tu editor/page builder imprima marcado semántico de párrafos."
+
+msgid "Title tag"
+msgstr "Etiqueta Title"
+
+msgid "The <title> tag is missing."
+msgstr "Falta la etiqueta <title>."
+
+msgid "The title tag is one of the strongest on-page relevance signals and is shown in search results."
+msgstr "La etiqueta title es una de las señales de relevancia on-page más fuertes y se muestra en los resultados de búsqueda."
+
+msgid "Add a unique, descriptive title between 30 and 60 characters."
+msgstr "Agrega un title único y descriptivo entre 30 y 60 caracteres."
+
+msgid "Include the primary keyword and a clear value proposition."
+msgstr "Incluye la palabra clave principal y una propuesta de valor clara."
+
+msgid "The <title> length is not optimal (%d characters): \"%s\"."
+msgstr "La longitud del <title> no es óptima (%d caracteres): \"%s\"."
+
+msgid "The <title> length is not optimal (%d characters)."
+msgstr "La longitud del <title> no es óptima (%d caracteres)."
+
+msgid "Very short titles miss context; very long titles may be truncated in search results."
+msgstr "Los títulos muy cortos pierden contexto; los muy largos pueden truncarse en los resultados de búsqueda."
+
+msgid "Keep the title between 30 and 60 characters."
+msgstr "Mantén el title entre 30 y 60 caracteres."
+
+msgid "Front-load the important terms."
+msgstr "Coloca los términos importantes al inicio."
+
+msgid "The <title> looks good (%d characters): \"%s\"."
+msgstr "El <title> se ve bien (%d caracteres): \"%s\"."
+
+msgid "The <title> looks good (%d characters)."
+msgstr "El <title> se ve bien (%d caracteres)."
+
+msgid "A well-formed title improves relevance and click-through rate."
+msgstr "Un buen title mejora la relevancia y el CTR."
+
+msgid "Meta description"
+msgstr "Meta description"
+
+msgid "The meta description is missing."
+msgstr "Falta la meta description."
+
+msgid "While not a direct ranking factor, meta descriptions strongly affect CTR and are often used by AI systems to summarize pages."
+msgstr "Aunque no es un factor directo de ranking, la meta description afecta mucho el CTR y suele ser usada por sistemas de IA para resumir páginas."
+
+msgid "Add a meta description between 70 and 155 characters."
+msgstr "Agrega una meta description entre 70 y 155 caracteres."
+
+msgid "Include the primary keyword and a clear benefit or call to action."
+msgstr "Incluye la palabra clave principal y un beneficio claro o llamado a la acción."
+
+msgid "The meta description length is not optimal (%d characters)."
+msgstr "La longitud de la meta description no es óptima (%d caracteres)."
+
+msgid "Very short descriptions miss persuasion; very long ones may be truncated."
+msgstr "Las descripciones muy cortas pierden persuasión; las muy largas pueden truncarse."
+
+msgid "Keep it between 70 and 155 characters."
+msgstr "Manténla entre 70 y 155 caracteres."
+
+msgid "Make it descriptive and specific to the page."
+msgstr "Hazla descriptiva y específica para la página."
+
+msgid "The meta description looks good (%d characters)."
+msgstr "La meta description se ve bien (%d caracteres)."
+
+msgid "A good meta description improves click-through rate and snippet quality."
+msgstr "Una buena meta description mejora el CTR y la calidad del snippet."
+
+msgid "Canonical URL"
+msgstr "URL canónica"
+
+msgid "Canonical is set: %s"
+msgstr "Canonical configurado: %s"
+
+msgid "Canonical is set."
+msgstr "Canonical configurado."
+
+msgid "Canonicals help consolidate duplicate URLs and ensure the correct version is indexed."
+msgstr "Los canonicals ayudan a consolidar URLs duplicadas y aseguran que se indexe la versión correcta."
+
+msgid "No canonical URL was found (<link rel=\"canonical\">)."
+msgstr "No se encontró URL canónica (<link rel=\"canonical\">)."
+
+msgid "Without a canonical, search engines may index unintended URL variants and split ranking signals."
+msgstr "Sin canonical, los motores de búsqueda pueden indexar variantes no deseadas de la URL y dividir señales de ranking."
+
+msgid "Add a canonical tag pointing to the preferred URL of the page."
+msgstr "Agrega una etiqueta canonical apuntando a la URL preferida de la página."
+
+msgid "Ensure it matches the final URL after redirects."
+msgstr "Asegúrate de que coincida con la URL final después de redirecciones."
+
+msgid "Robots meta"
+msgstr "Meta robots"
+
+msgid "Robots meta contains \"noindex\": %s"
+msgstr "Meta robots contiene \"noindex\": %s"
+
+msgid "Robots meta contains \"noindex\"."
+msgstr "Meta robots contiene \"noindex\"."
+
+msgid "Pages marked noindex will not appear in search results and are often skipped by AI crawlers."
+msgstr "Las páginas con noindex no aparecerán en los resultados de búsqueda y a menudo son omitidas por crawlers de IA."
+
+msgid "Remove \"noindex\" if this page should be indexed."
+msgstr "Elimina \"noindex\" si esta página debe indexarse."
+
+msgid "Confirm the directive is not being injected by another plugin or template."
+msgstr "Confirma que la directiva no esté siendo inyectada por otro plugin o plantilla."
+
+msgid "Robots meta is missing (defaults to index, follow)."
+msgstr "Falta meta robots (por defecto es index, follow)."
+
+msgid "Explicit directives reduce ambiguity and prevent accidental indexing issues."
+msgstr "Las directivas explícitas reducen ambigüedad y evitan problemas de indexación accidentales."
+
+msgid "Add <meta name=\"robots\" content=\"index, follow\"> if appropriate."
+msgstr "Agrega <meta name=\"robots\" content=\"index, follow\"> si corresponde."
+
+msgid "Robots meta is set: %s"
+msgstr "Meta robots configurado: %s"
+
+msgid "Robots meta is set."
+msgstr "Meta robots configurado."
+
+msgid "Correct indexing directives help search engines crawl and index your content as intended."
+msgstr "Las directivas correctas ayudan a los motores de búsqueda a rastrear e indexar tu contenido como se espera."
+
+msgid "Viewport meta"
+msgstr "Meta viewport"
+
+msgid "Viewport meta is set: %s"
+msgstr "Meta viewport configurado: %s"
+
+msgid "Viewport meta is set."
+msgstr "Meta viewport configurado."
+
+msgid "Viewport configuration is required for mobile-friendly rendering, which affects SEO."
+msgstr "La configuración de viewport es necesaria para una correcta visualización en móvil, lo que afecta el SEO."
+
+msgid "Viewport meta is missing."
+msgstr "Falta meta viewport."
+
+msgid "Without it, pages may not render correctly on mobile devices, hurting usability and rankings."
+msgstr "Sin esto, las páginas pueden no renderizar correctamente en móviles, afectando la usabilidad y el ranking."
+
+msgid "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">."
+msgstr "Agrega <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">."
+
+msgid "Open Graph tags"
+msgstr "Etiquetas Open Graph"
+
+msgid "Open Graph is incomplete. Missing: %s."
+msgstr "Open Graph está incompleto. Faltan: %s."
+
+msgid "Open Graph is incomplete."
+msgstr "Open Graph está incompleto."
+
+msgid "Open Graph tags control how the page appears when shared and can provide extra context for some AI systems."
+msgstr "Las etiquetas Open Graph controlan cómo se ve la página al compartirse y pueden aportar contexto adicional a algunos sistemas de IA."
+
+msgid "Add og:title, og:description, og:image, og:type, and og:url."
+msgstr "Agrega og:title, og:description, og:image, og:type y og:url."
+
+msgid "Twitter Card"
+msgstr "Twitter Card"
+
+msgid "Twitter Card is set: %s"
+msgstr "Twitter Card configurado: %s"
+
+msgid "Twitter Card is set."
+msgstr "Twitter Card configurado."
+
+msgid "It controls how content appears when shared on X/Twitter."
+msgstr "Controla cómo aparece el contenido al compartirse en X/Twitter."
+
+msgid "Twitter Card meta is missing (twitter:card)."
+msgstr "Falta la meta de Twitter Card (twitter:card)."
+
+msgid "Without it, shared previews may be inconsistent and less clickable."
+msgstr "Sin esto, los previews al compartir pueden ser inconsistentes y menos clicables."
+
+msgid "Add <meta name=\"twitter:card\" content=\"summary_large_image\">."
+msgstr "Agrega <meta name=\"twitter:card\" content=\"summary_large_image\">."
+
+msgid "Twitter meta tags"
+msgstr "Etiquetas meta de Twitter"
+
+msgid "Twitter meta tags are incomplete. Missing: %s."
+msgstr "Las etiquetas meta de Twitter están incompletas. Faltan: %s."
+
+msgid "Twitter meta tags are incomplete."
+msgstr "Las etiquetas meta de Twitter están incompletas."
+
+msgid "Completing Twitter meta improves share previews and consistency across platforms."
+msgstr "Completar las metas de Twitter mejora los previews al compartir y la consistencia entre plataformas."
+
+msgid "Add twitter:title, twitter:description, and twitter:image."
+msgstr "Agrega twitter:title, twitter:description y twitter:image."
+
+msgid "Schema.org presence"
+msgstr "Presencia de Schema.org"
+
+msgid "Schema.org markup was detected."
+msgstr "Se detectó marcado Schema.org."
+
+msgid "Schema markup improves eligibility for rich results and helps AI systems understand the content type."
+msgstr "El marcado Schema mejora la elegibilidad para resultados enriquecidos y ayuda a sistemas de IA a entender el tipo de contenido."
+
+msgid "No Schema.org markup was detected (no JSON-LD and no microdata)."
+msgstr "No se detectó marcado Schema.org (sin JSON-LD ni microdata)."
+
+msgid "Without Schema, your content is less likely to qualify for rich results and harder for AI systems to classify and cite."
+msgstr "Sin Schema, tu contenido tiene menos probabilidades de calificar para resultados enriquecidos y es más difícil de clasificar y citar por sistemas de IA."
+
+msgid "Add Schema.org markup using JSON-LD."
+msgstr "Agrega marcado Schema.org usando JSON-LD."
+
+msgid "Start with the schema type that matches your content (Article, Product, FAQPage, LocalBusiness, etc.)."
+msgstr "Comienza con el tipo de schema que coincida con tu contenido (Article, Product, FAQPage, LocalBusiness, etc.)."
+
+msgid "JSON-LD validity"
+msgstr "Validez de JSON-LD"
+
+msgid "JSON-LD was found but could not be parsed (invalid JSON)."
+msgstr "Se encontró JSON-LD pero no se pudo interpretar (JSON inválido)."
+
+msgid "Invalid JSON-LD is ignored by search engines and AI crawlers."
+msgstr "Un JSON-LD inválido es ignorado por motores de búsqueda y crawlers de IA."
+
+msgid "Validate your JSON-LD with Google Rich Results Test."
+msgstr "Valida tu JSON-LD con Google Rich Results Test."
+
+msgid "Fix syntax errors such as missing quotes, trailing commas, or broken braces."
+msgstr "Corrige errores de sintaxis como comillas faltantes, comas finales o llaves mal cerradas."
+
+msgid "Microdata detected"
+msgstr "Microdata detectada"
+
+msgid "Microdata detected: %s"
+msgstr "Microdata detectada: %s"
+
+msgid "Microdata detected."
+msgstr "Microdata detectada."
+
+msgid "Microdata can provide structured information for crawlers, but JSON-LD is typically easier to maintain."
+msgstr "La microdata puede aportar información estructurada para crawlers, pero normalmente JSON-LD es más fácil de mantener."
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Keyword"
+msgstr "Palabra clave"
+
+msgid "Schema"
+msgstr "Schema"
+
+msgid "Readability"
+msgstr "Legibilidad"
+
+msgid "Meta Tags"
+msgstr "Meta Tags"
+
+msgid "LLMs/GEO"
+msgstr "LLMs/GEO"
+
+msgid "Core Web Vitals"
+msgstr "Core Web Vitals"
+
+msgid "Links"
+msgstr "Enlaces"
+
+msgid "SEO Report — %s"
+msgstr "Reporte SEO — %s"
+
+msgid "Score summary"
+msgstr "Resumen de puntuaciones"
+
+msgid "HTML Structure"
+msgstr "Estructura HTML"
+
+msgid "Links & Images"
+msgstr "Enlaces e Imágenes"
+
+msgid "Metric"
+msgstr "Métrica"
+
+msgid "Value"
+msgstr "Valor"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Category"
+msgstr "Categoría"
+
+msgid "Score"
+msgstr "Puntuación"
+
+msgid "Priority recommendations"
+msgstr "Recomendaciones prioritarias"
+
+msgid "No critical issues detected. Great job!"
+msgstr "No se detectaron problemas críticos. ¡Excelente trabajo!"
+
