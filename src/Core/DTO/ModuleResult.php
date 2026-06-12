@@ -1,12 +1,12 @@
 <?php
 /**
- * SEOSI\Core\DTO\ModuleResult
+ * BaloaStructureAuditorSEO\Core\DTO\ModuleResult
  * 
  * DTO for the result of a single analysis module.
  * Provides type safety and autocompletion for module results.
  */
 
-namespace SEOSI\Core\DTO;
+namespace BaloaStructureAuditorSEO\Core\DTO;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 

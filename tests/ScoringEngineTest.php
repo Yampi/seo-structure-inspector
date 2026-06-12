@@ -3,10 +3,10 @@
  * Tests for SEOSI\Core\ScoringEngine
  */
 
-namespace SEOSI\Tests;
+namespace BaloaStructureAuditorSEO\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SEOSI\Core\ScoringEngine;
+use BaloaStructureAuditorSEO\Core\ScoringEngine;
 
 class ScoringEngineTest extends TestCase {
 

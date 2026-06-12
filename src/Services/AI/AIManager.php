@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Services\AI\AIManager
+ * BaloaStructureAuditorSEO\Services\AI\AIManager
  *
  * Central manager for registering and calling AI recommendation providers.
  */
 
-namespace SEOSI\Services\AI;
+namespace BaloaStructureAuditorSEO\Services\AI;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -14,7 +14,7 @@ class AIManager {
     /**
      * Cache group name for transients.
      */
-    const TRANSIENT_PREFIX = 'seosi_ai_rec_';
+    const TRANSIENT_PREFIX = 'baloa_structure_auditor_seo_ai_rec_';
 
     /**
      * Registered AI providers.
@@ -51,10 +51,10 @@ class AIManager {
     public static function get_active_provider(): AIProviderInterface {
         self::ensure_defaults();
 
-        $options = get_option( 'seosi_options', [] );
+        $options = get_option( 'baloa_structure_auditor_seo_options', [] );
         $active_id = $options['ai_provider'] ?? 'default';
 
-        if ( isset( self::$providers[$active_id] ) ) {
+        if ( isset( self::$providers[$active_id] ) && self::$providers[$active_id]->is_configured() ) {
             return self::$providers[$active_id];
         }
 
@@ -74,7 +74,13 @@ class AIManager {
         }
 
         $provider = self::get_active_provider();
-        $cache_key = self::TRANSIENT_PREFIX . md5( $url . '_' . $provider->get_name() );
+        
+        // Include analysis score hash in cache key to invalidate if score/issues change
+        $analysis_hash = isset( $context['analysis_results']['global_score'] )
+            ? md5( (string) $context['analysis_results']['global_score'] )
+            : 'no_analysis';
+        
+        $cache_key = self::TRANSIENT_PREFIX . md5( $url . '_' . $provider->get_name() . '_' . $analysis_hash );
 
         // Try to get cached recommendations
         $cached = get_transient( $cache_key );
@@ -110,6 +116,18 @@ class AIManager {
     private static function ensure_defaults(): void {
         if ( ! isset( self::$providers['default'] ) ) {
             self::register_provider( 'default', new DefaultAIProvider() );
+        }
+        if ( ! isset( self::$providers['openai'] ) ) {
+            require_once __DIR__ . '/OpenAIProvider.php';
+            self::register_provider( 'openai', new OpenAIProvider() );
+        }
+        if ( ! isset( self::$providers['gemini'] ) ) {
+            require_once __DIR__ . '/GeminiProvider.php';
+            self::register_provider( 'gemini', new GeminiProvider() );
+        }
+        if ( ! isset( self::$providers['claude'] ) ) {
+            require_once __DIR__ . '/ClaudeProvider.php';
+            self::register_provider( 'claude', new ClaudeProvider() );
         }
     }
 }

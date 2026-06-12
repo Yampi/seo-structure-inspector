@@ -1,14 +1,14 @@
 <?php
 /**
- * SEOSI\Core\BaseAnalyzer
+ * BaloaStructureAuditorSEO\Core\BaseAnalyzer
  * 
  * Abstract base class for all analyzers.
  * Provides common methods for DOM loading and URL parsing.
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
-use SEOSI\Core\Contracts\AnalyzerInterface;
+use BaloaStructureAuditorSEO\Core\Contracts\AnalyzerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -35,7 +35,7 @@ abstract class BaseAnalyzer implements AnalyzerInterface {
      * @return string Base URL (scheme://host).
      */
     protected static function get_base_url( string $url ): string {
-        $p = parse_url( $url );
+        $p = wp_parse_url( $url );
         return ( $p['scheme'] ?? 'https' ) . '://' . ( $p['host'] ?? '' );
     }
 }

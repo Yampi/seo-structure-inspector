@@ -1,25 +1,24 @@
 <?php
 /**
- * SEOSI\Free\Analyzers\LinksAnalyzer
+ * BaloaStructureAuditorSEO\Free\Analyzers\LinksAnalyzer
  *
  * Orchestrator for links analysis.
  * Delegates to specialized sub-checks for internal/external links, images, and canonical.
  *
- * Migrated to SEOSI\Core\ScoringEngine in v0.3.0.
+ * Migrated to BaloaStructureAuditorSEO\Core\ScoringEngine in v0.3.0.
  *
  * @package SEO_Structure_Inspector
  * @since   0.1.0
  */
 
-namespace SEOSI\Free\Analyzers;
+namespace BaloaStructureAuditorSEO\Free\Analyzers;
 
-use SEOSI\Core\ScoringEngine;
-use SEOSI\Core\BaseAnalyzer;
-use SEOSI\Analyzers\Links\InternalLinksCheck;
-use SEOSI\Analyzers\Links\ExternalLinksCheck;
-use SEOSI\Analyzers\Links\ImageAltCheck;
-use SEOSI\Analyzers\Links\CanonicalCheck;
-use SEOSI\Analyzers\Links\BrokenLinksCheck;
+use BaloaStructureAuditorSEO\Core\ScoringEngine;
+use BaloaStructureAuditorSEO\Core\BaseAnalyzer;
+use BaloaStructureAuditorSEO\Analyzers\Links\InternalLinksCheck;
+use BaloaStructureAuditorSEO\Analyzers\Links\ExternalLinksCheck;
+use BaloaStructureAuditorSEO\Analyzers\Links\CanonicalCheck;
+use BaloaStructureAuditorSEO\Analyzers\Links\BrokenLinksCheck;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -33,7 +32,7 @@ class LinksAnalyzer extends BaseAnalyzer {
      * @param array  $context Optional context.
      * @return array Standard module result via ScoringEngine::build_result().
      */
-    public static function analyze( string $html, string $url = '', array $context = [] ): array|\SEOSI\Core\DTO\ModuleResult {
+    public static function analyze( string $html, string $url = '', array $context = [] ): array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult {
         $dom   = self::load_dom( $html );
         $xpath = new \DOMXPath( $dom );
         $base  = self::get_base_url( $url );
@@ -41,7 +40,7 @@ class LinksAnalyzer extends BaseAnalyzer {
         $checks  = [];
         $details = [];
 
-        // ── Links classification ─────────────────────────────────────────────────
+        // â”€â”€ Links classification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $links    = self::classify_links( $dom, $base );
         $internal = $links['internal'];
         $external = $links['external'];
@@ -58,38 +57,22 @@ class LinksAnalyzer extends BaseAnalyzer {
             'notext_sample'   => array_slice( $notext,   0, 3 ),
         ];
 
-        // ── Internal links checks ───────────────────────────────────────────────
+        // â”€â”€ Internal links checks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $checks[] = InternalLinksCheck::build_count_check( count( $internal ) );
         self::append_check( $checks, InternalLinksCheck::build_nofollow_check( count( $nofollow ) ) );
 
-        // ── External links checks ───────────────────────────────────────────────
+        // ——————————————————————————————————————————————————————————————————————————————
         $checks[] = ExternalLinksCheck::build_count_check( count( $external ) );
         $checks[] = ExternalLinksCheck::build_no_anchor_check( count( $notext ), $notext );
 
-        // ── Image alt checks ────────────────────────────────────────────────────
-        $images       = ImageAltCheck::analyze( $dom );
-        $img_total    = count( $images['all'] );
-        $img_noalt    = count( $images['noalt'] );
-        $img_emptyalt = count( $images['emptyalt'] );
+        // ——————————————————————————————————————————————————————————————————————————————
 
-        $details['images'] = [
-            'total'          => $img_total,
-            'noalt_count'    => $img_noalt,
-            'emptyalt_count' => $img_emptyalt,
-            'noalt_sample'   => array_slice( $images['noalt'], 0, 4 ),
-        ];
-
-        self::append_check( $checks, ImageAltCheck::build_presence_check( $img_total ) );
-        self::append_check( $checks, ImageAltCheck::build_missing_alt_check( $img_noalt, $images['noalt'] ) );
-        self::append_check( $checks, ImageAltCheck::build_empty_alt_check( $img_emptyalt ) );
-        self::append_check( $checks, ImageAltCheck::build_with_alt_check( $img_total - $img_noalt, $img_total ) );
-
-        // ── Canonical check ─────────────────────────────────────────────────────
+        // ——————————————————————————————————————————————————————————————————————————————
         $details['canonical'] = trim( $xpath->query( '//link[@rel="canonical"]/@href' )->item(0)?->nodeValue ?? '' );
         $checks[] = CanonicalCheck::build_check( $xpath, $url );
 
-        // ── Broken links check ─────────────────────────────────────────────────
-        $enable_broken_links_check = \SEOSI\Admin\Settings::get_option( 'enable_broken_links_check' );
+        // ——————————————————————————————————————————————————————————————————————————————
+        $enable_broken_links_check = \BaloaStructureAuditorSEO\Admin\Settings::get_option( 'enable_broken_links_check' );
         if ( $enable_broken_links_check ) {
             $total_links = count( $internal ) + count( $external );
             
@@ -140,14 +123,14 @@ class LinksAnalyzer extends BaseAnalyzer {
         }
     }
 
-    // ── Link classifier ───────────────────────────────────────────────────────
+    // â”€â”€ Link classifier â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function classify_links( \DOMDocument $dom, string $base ): array {
         $internal          = [];
         $external          = [];
         $notext            = [];
         $nofollow_internal = [];
-        $host              = parse_url( $base, PHP_URL_HOST ) ?? '';
+        $host              = wp_parse_url( $base, PHP_URL_HOST ) ?? '';
 
         foreach ( $dom->getElementsByTagName( 'a' ) as $a ) {
             $href = trim( $a->getAttribute( 'href' ) );

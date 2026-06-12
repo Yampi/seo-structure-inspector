@@ -1,12 +1,12 @@
 <?php
 /**
- * SEOSI\Services\FetcherService
+ * BaloaStructureAuditorSEO\Services\FetcherService
  * Handles HTML fetching with multiple strategies.
  */
 
-namespace SEOSI\Services;
+namespace BaloaStructureAuditorSEO\Services;
 
-use SEOSI\Core\Http;
+use BaloaStructureAuditorSEO\Core\Http;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -25,8 +25,10 @@ class FetcherService {
             return [ 'html' => null, 'strategy' => null, 'error' => 'URL no permitida por seguridad (DNS rebinding detected).' ];
         }
 
+        $timeout = (int) \BaloaStructureAuditorSEO\Admin\Settings::get_option( 'timeout', 20 );
+
         $response = self::fetch_with_redirect_validation( $url, Http::args( [
-            'timeout'     => 20,
+            'timeout'     => $timeout,
             'redirection' => 0,
             'user-agent'  => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
             'headers'     => [
@@ -37,7 +39,7 @@ class FetcherService {
         ] ) );
 
         if ( is_wp_error( $response ) ) {
-            error_log( '[SEOSI] Direct fetch failed: ' . $response->get_error_message() );
+            \BaloaStructureAuditorSEO\Core\Logger::error( 'Direct fetch failed: ' . $response->get_error_message() );
         }
 
         $code = ! is_wp_error( $response ) ? (int) wp_remote_retrieve_response_code( $response ) : 0;
@@ -49,30 +51,7 @@ class FetcherService {
             }
         }
 
-        $cache_url      = 'https://webcache.googleusercontent.com/search?q=cache:' . rawurlencode( $url ) . '&hl=es';
-        $cache_response = wp_remote_get( $cache_url, Http::args( [
-            'timeout'    => 15,
-            'user-agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1)',
-        ] ) );
-
-        if ( is_wp_error( $cache_response ) ) {
-            error_log( '[SEOSI] Google Cache fetch failed: ' . $cache_response->get_error_message() );
-        }
-
-        $cache_code = ! is_wp_error( $cache_response ) ? (int) wp_remote_retrieve_response_code( $cache_response ) : 0;
-
-        if ( ! is_wp_error( $cache_response ) && $cache_code === 200 ) {
-            $html = wp_remote_retrieve_body( $cache_response );
-            if ( ! empty( trim( $html ) ) ) {
-                return [ 'html' => $html, 'strategy' => 'google_cache', 'error' => null ];
-            }
-        }
-
-        if ( $cache_code === 403 ) {
-            error_log( '[SEOSI] Google Cache returned HTTP 403 for ' . $url );
-        }
-
-        $error_msg = self::build_fetch_error_message( $response, $code, $cache_response, $cache_code );
+        $error_msg = self::build_fetch_error_message( $response, $code );
 
         return [ 'html' => null, 'strategy' => null, 'error' => $error_msg ];
     }
@@ -100,7 +79,7 @@ class FetcherService {
         return $html;
     }
 
-    private static function build_fetch_error_message( $response, int $code, $cache_response, int $cache_code ): string {
+    private static function build_fetch_error_message( $response, int $code ): string {
         if ( is_wp_error( $response ) ) {
             return self::humanize_wp_error( $response->get_error_message() );
         }
@@ -115,14 +94,6 @@ class FetcherService {
 
         if ( $code >= 500 ) {
             return "HTTP {$code} — error del servidor remoto. Intenta pegar el HTML manualmente.";
-        }
-
-        if ( is_wp_error( $cache_response ) ) {
-            return self::humanize_wp_error( $cache_response->get_error_message() );
-        }
-
-        if ( $cache_code === 403 ) {
-            return 'HTTP 403 — el servidor y Google Cache bloquearon la solicitud. Intenta pegar el HTML manualmente.';
         }
 
         return "HTTP {$code} — el servidor bloqueó la solicitud (WAF/Cloudflare). Intenta pegar el HTML manualmente.";
@@ -147,7 +118,7 @@ class FetcherService {
     }
 
     private static function is_safe_remote_url( string $url ): bool {
-        $parsed = parse_url( $url );
+        $parsed = wp_parse_url( $url );
         if ( ! $parsed || ! isset( $parsed['host'] ) ) {
             return false;
         }
@@ -178,7 +149,7 @@ class FetcherService {
     }
 
     private static function is_dns_safe( string $url ): bool {
-        $parsed = parse_url( $url );
+        $parsed = wp_parse_url( $url );
         if ( ! $parsed || ! isset( $parsed['host'] ) ) {
             return false;
         }
@@ -229,16 +200,16 @@ class FetcherService {
                 }
 
                 if ( ! str_starts_with( $location, 'http://' ) && ! str_starts_with( $location, 'https://' ) ) {
-                    $parsed   = parse_url( $current_url );
+                    $parsed   = wp_parse_url( $current_url );
                     $location = ( $parsed['scheme'] ?? 'https' ) . '://' . ( $parsed['host'] ?? '' ) . '/' . ltrim( $location, '/' );
                 }
 
                 if ( ! self::is_safe_remote_url( $location ) ) {
-                    return new \WP_Error( 'seosi_ssrf', 'Redirección bloqueada por seguridad (SSRF protection).' );
+                    return new \WP_Error( 'baloa_structure_auditor_seo_ssrf', 'Redirección bloqueada por seguridad (SSRF protection).' );
                 }
 
                 if ( ! self::is_dns_safe( $location ) ) {
-                    return new \WP_Error( 'seosi_dns', 'Redirección bloqueada por seguridad (DNS rebinding detected).' );
+                    return new \WP_Error( 'baloa_structure_auditor_seo_dns', 'Redirección bloqueada por seguridad (DNS rebinding detected).' );
                 }
 
                 $current_url = $location;
@@ -249,6 +220,6 @@ class FetcherService {
             return $response;
         }
 
-        return new \WP_Error( 'seosi_redirects', 'Demasiadas redirecciones.' );
+        return new \WP_Error( 'baloa_structure_auditor_seo_redirects', 'Demasiadas redirecciones.' );
     }
 }

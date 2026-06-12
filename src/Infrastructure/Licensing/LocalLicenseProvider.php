@@ -1,13 +1,13 @@
 <?php
 /**
- * SEOSI\Infrastructure\Licensing\LocalLicenseProvider
+ * BaloaStructureAuditorSEO\Infrastructure\Licensing\LocalLicenseProvider
  * 
  * Concrete implementation for local license key validation.
  */
 
-namespace SEOSI\Infrastructure\Licensing;
+namespace BaloaStructureAuditorSEO\Infrastructure\Licensing;
 
-use SEOSI\Core\Contracts\LicenseProviderInterface;
+use BaloaStructureAuditorSEO\Core\Contracts\LicenseProviderInterface;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -37,12 +37,12 @@ class LocalLicenseProvider implements LicenseProviderInterface {
         }
 
         // Allow bypassing via local constant for dev environments
-        if ( defined( 'SEOSI_PRO_ENABLED' ) && \SEOSI_PRO_ENABLED ) {
+        if ( defined( 'BALOA_STRUCTURE_AUDITOR_SEO_PRO_ENABLED' ) && \BALOA_STRUCTURE_AUDITOR_SEO_PRO_ENABLED ) {
             $this->cached_premium = true;
             return true;
         }
 
-        $key = (string) get_option( 'seosi_license_key', '' );
+        $key = (string) get_option( 'baloa_structure_auditor_seo_license_key', '' );
         $key = strtoupper( trim( $key ) );
 
         $is_valid = in_array( $key, self::VALID_KEYS, true );
@@ -68,7 +68,7 @@ class LocalLicenseProvider implements LicenseProviderInterface {
      * @return array Standardized license status array.
      */
     public function get_license_status(): array {
-        $key = (string) get_option( 'seosi_license_key', '' );
+        $key = (string) get_option( 'baloa_structure_auditor_seo_license_key', '' );
         $is_premium = $this->is_premium();
 
         return [

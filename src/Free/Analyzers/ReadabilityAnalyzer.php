@@ -1,21 +1,21 @@
 <?php
 /**
- * SEOSI\Free\Analyzers\ReadabilityAnalyzer
+ * BaloaStructureAuditorSEO\Free\Analyzers\ReadabilityAnalyzer
  *
  * Analyzes content readability using Flesch-Kincaid adapted for Spanish
  * (Fernandez-Huerta), passive voice, long sentences, long paragraphs,
  * and transition word ratio.
  *
- * Migrated to SEOSI\Core\ScoringEngine in v0.3.0.
+ * Migrated to BaloaStructureAuditorSEO\Core\ScoringEngine in v0.3.0.
  *
  * @package SEO_Structure_Inspector
  * @since   0.1.0
  */
 
-namespace SEOSI\Free\Analyzers;
+namespace BaloaStructureAuditorSEO\Free\Analyzers;
 
-use SEOSI\Core\ScoringEngine;
-use SEOSI\Core\BaseAnalyzer;
+use BaloaStructureAuditorSEO\Core\ScoringEngine;
+use BaloaStructureAuditorSEO\Core\BaseAnalyzer;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -29,7 +29,7 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
      * @param array  $context Optional context.
      * @return array Standard module result via ScoringEngine::build_result().
      */
-    public static function analyze( string $html, string $url = '', array $context = [] ): array|\SEOSI\Core\DTO\ModuleResult {
+    public static function analyze( string $html, string $url = '', array $context = [] ): array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult {
         $dom  = self::load_dom( $html );
         $text = self::extract_body_text( $dom );
 
@@ -60,7 +60,7 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
             ],
         ];
 
-        // ── 1. Flesch score ───────────────────────────────────────────────────
+        // â”€â”€ 1. Flesch score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $flesch_label = self::flesch_label( $flesch );
 
         if ( $flesch >= 60 ) {
@@ -91,7 +91,7 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
             ];
         }
 
-        // ── 2. Long sentences ─────────────────────────────────────────────────
+        // â”€â”€ 2. Long sentences â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $long_pct = count( $sentences ) > 0
             ? round( count( $long_sentences ) / count( $sentences ) * 100 )
             : 0;
@@ -115,7 +115,7 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
             ];
         }
 
-        // ── 3. Passive voice ──────────────────────────────────────────────────
+        // â”€â”€ 3. Passive voice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $passive_pct = count( $sentences ) > 0
             ? round( count( $passive ) / count( $sentences ) * 100 )
             : 0;
@@ -134,12 +134,12 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
                 'severity'       => 'warning',
                 'category'       => 'seo',
                 'message'        => "Voz pasiva: {$passive_pct}% de oraciones — supera el 10% recomendado",
-                'recommendation' => 'Reescribe las oraciones en voz activa. Ejemplo: en lugar de "El articulo fue escrito por..." usa "escribio el articulo". La voz activa es mas directa y facil de procesar para lectores y LLMs.',
+                'recommendation' => 'Reescribe las oraciones en voz activa. Ejemplo: en lugar de "El artículo fue escrito por..." usa "escribió el artículo". La voz activa es más directa y fácil de procesar para lectores y LLMs.',
                 'context'        => [ 'percent' => $passive_pct, 'samples' => array_slice( $passive, 0, 2 ) ],
             ];
         }
 
-        // ── 4. Long paragraphs ────────────────────────────────────────────────
+        // â”€â”€ 4. Long paragraphs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $long_p_count = count( $long_paragraphs );
 
         if ( $long_p_count === 0 ) {
@@ -154,13 +154,13 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
                 'id'             => 'readability_long_paragraphs',
                 'severity'       => 'warning',
                 'category'       => 'geo',
-                'message'        => "{$long_p_count} parrafo(s) con mas de 150 palabras",
-                'recommendation' => 'Divide los parrafos largos en bloques mas pequenos. Los LLMs extraen mejor la informacion de parrafos de 40-80 palabras. Los parrafos cortos tambien mejoran la chunkability del contenido para AI Overviews.',
+                'message'        => "{$long_p_count} párrafo(s) con más de 150 palabras",
+                'recommendation' => 'Divide los párrafos largos en bloques más pequeños. Los LLMs extraen mejor la información de párrafos de 40-80 palabras. Los párrafos cortos también mejoran la chunkability del contenido para AI Overviews.',
                 'context'        => [ 'count' => $long_p_count ],
             ];
         }
 
-        // ── 5. Transition words ───────────────────────────────────────────────
+        // â”€â”€ 5. Transition words â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $trans_pct = $transitions['ratio'];
 
         if ( $trans_pct >= 30 ) {
@@ -176,8 +176,8 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
                 'id'             => 'readability_transitions',
                 'severity'       => 'warning',
                 'category'       => 'seo',
-                'message'        => "Palabras de transicion: {$trans_pct}% de oraciones — por debajo del 30% recomendado",
-                'recommendation' => 'Agrega conectores: "sin embargo", "ademas", "por lo tanto", "en consecuencia", "por ejemplo". Mejoran la cohesion del texto y facilitan la lectura secuencial por parte de los LLMs.',
+                'message'        => "Palabras de transición: {$trans_pct}% de oraciones — por debajo del 30% recomendado",
+                'recommendation' => 'Agrega conectores: "sin embargo", "además", "por lo tanto", "en consecuencia", "por ejemplo". Mejoran la cohesión del texto y facilitan la lectura secuencial por parte de los LLMs.',
                 'context'        => [ 'percent' => $trans_pct ],
             ];
         }
@@ -185,7 +185,7 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
         return ScoringEngine::build_result( $checks, $details );
     }
 
-    // ── Text extraction ───────────────────────────────────────────────────────
+    // â”€â”€ Text extraction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function extract_body_text( \DOMDocument $dom ): string {
         $remove_tags = [ 'script', 'style', 'nav', 'header', 'footer', 'aside' ];
@@ -210,7 +210,7 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
         return $paragraphs;
     }
 
-    // ── Text helpers ──────────────────────────────────────────────────────────
+    // â”€â”€ Text helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function split_sentences( string $text ): array {
         $sentences = preg_split( '/(?<=[.!?])\s+/', $text, -1, PREG_SPLIT_NO_EMPTY );
@@ -224,11 +224,11 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
 
     private static function count_syllables( string $word ): int {
         $word   = mb_strtolower( $word );
-        $vowels = preg_match_all( '/[aeiouáéíóúaeiou]/u', $word );
+        $vowels = preg_match_all( '/[aeiouáéíóú]/u', $word );
         return max( 1, (int) $vowels );
     }
 
-    // ── Flesch (Fernandez-Huerta for Spanish) ─────────────────────────────────
+    // â”€â”€ Flesch (Fernandez-Huerta for Spanish) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function flesch_score( string $text, array $sentences, array $words ): int {
         $word_count     = count( $words );
@@ -250,17 +250,17 @@ class ReadabilityAnalyzer extends BaseAnalyzer {
 
     private static function flesch_label( int $score ): string {
         return match( true ) {
-            $score >= 90 => 'Muy facil',
-            $score >= 80 => 'Facil',
-            $score >= 70 => 'Bastante facil',
+            $score >= 90 => 'Muy fácil',
+            $score >= 80 => 'Fácil',
+            $score >= 70 => 'Bastante fácil',
             $score >= 60 => 'Normal',
-            $score >= 50 => 'Bastante dificil',
-            $score >= 30 => 'Dificil',
-            default      => 'Muy dificil',
+            $score >= 50 => 'Bastante difícil',
+            $score >= 30 => 'Difícil',
+            default      => 'Muy difícil',
         };
     }
 
-    // ── Analyzers ─────────────────────────────────────────────────────────────
+    // â”€â”€ Analyzers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function long_sentences( array $sentences ): array {
         return array_values( array_filter( $sentences, fn( $s ) => str_word_count( $s ) > 20 ) );

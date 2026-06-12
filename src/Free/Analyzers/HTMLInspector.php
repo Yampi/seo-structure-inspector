@@ -1,21 +1,21 @@
 <?php
 /**
- * SEOSI\Free\Analyzers\HTMLInspector
+ * BaloaStructureAuditorSEO\Free\Analyzers\HTMLInspector
  *
  * Analyzes the structural hierarchy of HTML tags:
- * body, header, footer, main, section, article, h1–h3, p
+ * body, header, footer, main, section, article, h1-h3, p
  *
- * Migrated to SEOSI\Core\ScoringEngine in v0.3.0.
+ * Migrated to BaloaStructureAuditorSEO\Core\ScoringEngine in v0.3.0.
  *
  * @package SEO_Structure_Inspector
  * @since   0.1.0
  */
 
-namespace SEOSI\Free\Analyzers;
+namespace BaloaStructureAuditorSEO\Free\Analyzers;
 
-use SEOSI\Core\ScoringEngine;
-use SEOSI\Core\CheckPresenter;
-use SEOSI\Core\BaseAnalyzer;
+use BaloaStructureAuditorSEO\Core\ScoringEngine;
+use BaloaStructureAuditorSEO\Core\CheckPresenter;
+use BaloaStructureAuditorSEO\Core\BaseAnalyzer;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -29,7 +29,7 @@ class HTMLInspector extends BaseAnalyzer {
      * @param array  $context Optional context.
      * @return array Standard module result via ScoringEngine::build_result().
      */
-    public static function analyze( string $html, string $url = '', array $context = [] ): array|\SEOSI\Core\DTO\ModuleResult {
+    public static function analyze( string $html, string $url = '', array $context = [] ): array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult {
         $dom     = self::load_dom( $html );
         $xpath   = new \DOMXPath( $dom );
         $details = self::build_details( $dom, $xpath );
@@ -38,7 +38,7 @@ class HTMLInspector extends BaseAnalyzer {
         return ScoringEngine::build_result( $checks, $details );
     }
 
-    // ── Tag counters ──────────────────────────────────────────────────────────
+    // â”€â”€ Tag counters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function count_tag( \DOMDocument $dom, string $tag ): int {
         return $dom->getElementsByTagName( $tag )->length;
@@ -53,7 +53,7 @@ class HTMLInspector extends BaseAnalyzer {
         return array_filter( $texts );
     }
 
-    // ── Build raw details ─────────────────────────────────────────────────────
+    // â”€â”€ Build raw details â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function build_details( \DOMDocument $dom, \DOMXPath $xpath ): array {
         $tags    = [ 'body', 'header', 'main', 'footer', 'section', 'article', 'h1', 'h2', 'h3', 'p' ];
@@ -87,7 +87,7 @@ class HTMLInspector extends BaseAnalyzer {
         return $headings;
     }
 
-    // ── Checks ────────────────────────────────────────────────────────────────
+    // â”€â”€ Checks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /**
      * Returns array of standard checks.
@@ -99,7 +99,7 @@ class HTMLInspector extends BaseAnalyzer {
     private static function run_checks( array $d ): array {
         $checks = [];
 
-        // ── 1. Single <body> ──────────────────────────────────────────────────
+        // â”€â”€ 1. Single <body> â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( $d['body']['count'] === 1 ) {
             $checks[] = [
                 'id'       => 'single_body',
@@ -116,7 +116,7 @@ class HTMLInspector extends BaseAnalyzer {
             ];
         }
 
-        // ── 2. Single <h1> ────────────────────────────────────────────────────
+        // â”€â”€ 2. Single <h1> â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $h1 = $d['h1']['count'];
         if ( $h1 === 1 ) {
             $checks[] = [
@@ -141,7 +141,7 @@ class HTMLInspector extends BaseAnalyzer {
             ];
         }
 
-        // ── 3. h2 exists if h3 exists ─────────────────────────────────────────
+        // â”€â”€ 3. h2 exists if h3 exists â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( $d['h3']['count'] > 0 && $d['h2']['count'] === 0 ) {
             $checks[] = [
                 'id'             => 'heading_hierarchy',
@@ -158,7 +158,7 @@ class HTMLInspector extends BaseAnalyzer {
             ];
         }
 
-        // ── 4. Heading order (no skipping levels) ─────────────────────────────
+        // â”€â”€ 4. Heading order (no skipping levels) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( count( $d['heading_order'] ) === 0 ) {
             $checks[] = [
                 'id'       => 'heading_order',
@@ -174,7 +174,7 @@ class HTMLInspector extends BaseAnalyzer {
                     'id'       => 'heading_order',
                     'severity' => 'pass',
                     'category' => 'seo',
-                    'message'  => 'Heading hierarchy has no skipped levels (h1→h2→h3)',
+                    'message'  => 'Heading hierarchy has no skipped levels (h1 -> h2 -> h3)',
                 ];
             } else {
                 foreach ( $order_issues as $i => $oi ) {
@@ -183,13 +183,13 @@ class HTMLInspector extends BaseAnalyzer {
                         'severity'       => 'error',
                         'category'       => 'seo',
                         'message'        => $oi,
-                        'recommendation' => 'Fix heading order so levels are not skipped. Structure: h1 → h2 → h3.',
+                        'recommendation' => 'Fix heading order so levels are not skipped. Structure: h1 -> h2 -> h3.',
                     ];
                 }
             }
         }
 
-        // ── 5. <footer> present ───────────────────────────────────────────────
+        // â”€â”€ 5. <footer> present â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( $d['footer']['count'] >= 1 ) {
             $checks[] = [
                 'id'       => 'has_footer',
@@ -205,7 +205,7 @@ class HTMLInspector extends BaseAnalyzer {
             ];
         }
 
-        // ── 6. <main> present ─────────────────────────────────────────────────
+        // â”€â”€ 6. <main> present â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( $d['main']['count'] >= 1 ) {
             $checks[] = [
                 'id'       => 'has_main',
@@ -221,7 +221,7 @@ class HTMLInspector extends BaseAnalyzer {
             ];
         }
 
-        // ── 7. <section> or <article> used ────────────────────────────────────
+        // â”€â”€ 7. <section> or <article> used â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $has_semantic = $d['section']['count'] > 0 || $d['article']['count'] > 0;
         if ( $has_semantic ) {
             $checks[] = [
@@ -238,7 +238,7 @@ class HTMLInspector extends BaseAnalyzer {
             ];
         }
 
-        // ── 8. <p> tags present ───────────────────────────────────────────────
+        // â”€â”€ 8. <p> tags present â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( $d['p']['count'] > 0 ) {
             $checks[] = [
                 'id'       => 'has_paragraphs',
@@ -255,7 +255,7 @@ class HTMLInspector extends BaseAnalyzer {
             ];
         }
 
-        // ── 9. <article> inside <section> ────────────────────────────────────
+        // â”€â”€ 9. <article> inside <section> â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( $d['section']['count'] > 0 && $d['article']['count'] > 0 ) {
             $checks[] = [
                 'id'       => 'article_in_section',
@@ -269,7 +269,7 @@ class HTMLInspector extends BaseAnalyzer {
     }
 
     /**
-     * Checks that headings don't skip levels (e.g. h1 → h3 without h2).
+     * Checks that headings don't skip levels (e.g. h1 -> h3 without h2).
      *
      * @param array $headings Flat list from get_heading_order().
      * @return string[] Error messages.

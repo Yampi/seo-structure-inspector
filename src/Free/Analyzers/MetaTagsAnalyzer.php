@@ -1,21 +1,21 @@
 <?php
 /**
- * SEOSI\Free\Analyzers\MetaTagsAnalyzer
+ * BaloaStructureAuditorSEO\Free\Analyzers\MetaTagsAnalyzer
  *
  * Checks presence and quality of meta tags:
  * standard SEO metas, Open Graph, Twitter Card, canonical, robots, viewport.
  *
- * Migrated to SEOSI\Core\ScoringEngine in v0.3.0.
+ * Migrated to BaloaStructureAuditorSEO\Core\ScoringEngine in v0.3.0.
  *
  * @package SEO_Structure_Inspector
  * @since   0.1.0
  */
 
-namespace SEOSI\Free\Analyzers;
+namespace BaloaStructureAuditorSEO\Free\Analyzers;
 
-use SEOSI\Core\ScoringEngine;
-use SEOSI\Core\CheckPresenter;
-use SEOSI\Core\BaseAnalyzer;
+use BaloaStructureAuditorSEO\Core\ScoringEngine;
+use BaloaStructureAuditorSEO\Core\CheckPresenter;
+use BaloaStructureAuditorSEO\Core\BaseAnalyzer;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -29,14 +29,14 @@ class MetaTagsAnalyzer extends BaseAnalyzer {
      * @param array  $context Optional context.
      * @return array Standard module result via ScoringEngine::build_result().
      */
-    public static function analyze( string $html, string $url = '', array $context = [] ): array|\SEOSI\Core\DTO\ModuleResult {
+    public static function analyze( string $html, string $url = '', array $context = [] ): array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult {
         $dom   = self::load_dom( $html );
         $xpath = new \DOMXPath( $dom );
 
         $checks  = [];
         $details = self::extract_all( $xpath );
 
-        // ── Standard SEO ──────────────────────────────────────────────────────
+        // â”€â”€ Standard SEO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         // Title
         $title = trim( $xpath->query( '//title' )->item(0)?->textContent ?? '' );
@@ -170,7 +170,7 @@ class MetaTagsAnalyzer extends BaseAnalyzer {
             ];
         }
 
-        // ── Open Graph ────────────────────────────────────────────────────────
+        // â”€â”€ Open Graph â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         $og_fields  = [
             'og:title'       => 'OG Title',
@@ -205,7 +205,7 @@ class MetaTagsAnalyzer extends BaseAnalyzer {
             ];
         }
 
-        // ── Twitter Card ──────────────────────────────────────────────────────
+        // â”€â”€ Twitter Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         $tw_card = self::meta( $xpath, 'name', 'twitter:card' );
 
@@ -261,7 +261,7 @@ class MetaTagsAnalyzer extends BaseAnalyzer {
         return ScoringEngine::build_result( $checks, $details );
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function meta( \DOMXPath $xpath, string $attr, string $value ): string {
         $node = $xpath->query( "//meta[@{$attr}='{$value}']/@content" )->item(0);

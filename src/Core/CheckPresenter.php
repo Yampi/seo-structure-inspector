@@ -1,6 +1,6 @@
 <?php
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -10,20 +10,20 @@ class CheckPresenter {
     }
 
     public static function apply_i18n( array $checks ): array {
-        return self::apply( $checks, static fn( string $s ): string => __( $s, 'seo-si' ) );
+        return self::apply( $checks, static fn( string $s ): string => $s );
     }
 
-    public static function apply_with( array $checks, callable $t ): array {
-        return self::apply( $checks, $t );
+    public static function apply_with( array $checks, callable $t = null ): array {
+        return self::apply( $checks );
     }
 
-    private static function apply( array $checks, callable $t ): array {
+    private static function apply( array $checks ): array {
         $out = [];
 
         foreach ( $checks as $check ) {
             if ( ! is_array( $check ) ) continue;
 
-            $presented = CheckCatalog::present( $check, $t );
+            $presented = CheckCatalog::present( $check );
             if ( $presented === null ) {
                 $out[] = $check;
                 continue;

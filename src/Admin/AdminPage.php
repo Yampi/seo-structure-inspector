@@ -1,12 +1,12 @@
 <?php
 /**
- * SEOSI\Admin\AdminPage
+ * BaloaStructureAuditorSEO\Admin\AdminPage
  * Admin page — analyze any URL or discover URLs from sitemap.
  */
 
-namespace SEOSI\Admin;
+namespace BaloaStructureAuditorSEO\Admin;
 
-use SEOSI\Core\Capabilities;
+use BaloaStructureAuditorSEO\Core\Capabilities;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -17,15 +17,15 @@ class AdminPage {
         add_action( 'admin_menu', [ __CLASS__, 'add_glossary_page' ] );
         add_action( 'admin_menu', [ __CLASS__, 'add_reversion_page' ] );
         add_action( 'admin_menu', [ __CLASS__, 'add_readiness_page' ], 999 ); // Add hidden page
-        add_action( 'after_plugin_row_seo-structure-inspector/seo-structure-inspector.php', [ __CLASS__, 'render_uninstall_warning' ], 10, 3 );
+        add_action( 'after_plugin_row_baloa-structure-auditor-seo/baloa-structure-auditor-seo.php', [ __CLASS__, 'render_uninstall_warning' ], 10, 3 );
     }
 
     public static function add_menu(): void {
         add_menu_page(
-            'SEO Structure Inspector',
-            'SEO Inspector',
+            'Baloa Structure Auditor for SEO',
+            'SEO Auditor',
             Capabilities::analyze(),
-            'seo-structure-inspector',
+            'baloa-structure-auditor-seo',
             [ __CLASS__, 'render' ],
             'dashicons-search',
             30
@@ -34,21 +34,21 @@ class AdminPage {
 
     public static function add_glossary_page(): void {
         add_submenu_page(
-            'seo-structure-inspector',
+            'baloa-structure-auditor-seo',
             'Glosario SEO',
             'Glosario',
             Capabilities::analyze(),
-            'seosi-glossary',
+            'baloa-glossary',
             [ __CLASS__, 'render_glossary' ]
         );
     }
 
     public static function render_glossary(): void {
         if ( ! Capabilities::user_can_analyze() ) {
-            wp_die( esc_html__( 'No tienes permisos para ver esta página.', 'seo-si' ) );
+            wp_die( esc_html__( 'No tienes permisos para ver esta página.', 'baloa-structure-auditor-seo' ) );
         }
 
-        \SEOSI\Core\ViewRenderer::render_echo( 'glossary-page' );
+        \BaloaStructureAuditorSEO\Core\ViewRenderer::render_echo( 'glossary-page' );
     }
 
     /**
@@ -57,10 +57,10 @@ class AdminPage {
     public static function add_readiness_page(): void {
         add_submenu_page(
             null, // Hidden from menu
-            'SEO Structure Inspector Readiness',
+            'Baloa Structure Auditor for SEO Readiness',
             'Readiness',
             Capabilities::manage_settings(),
-            'seosi-readiness',
+            'baloa-readiness',
             [ __CLASS__, 'render_readiness' ]
         );
     }
@@ -68,13 +68,13 @@ class AdminPage {
     public static function render(): void {
         if ( ! Capabilities::user_can_analyze() ) {
             wp_die(
-                esc_html__( 'No tienes permisos para usar SEO Structure Inspector. Se requiere poder editar entradas o administrar el sitio.', 'seo-si' ),
-                esc_html__( 'Permisos insuficientes', 'seo-si' ),
+                esc_html__( 'No tienes permisos para usar Baloa Structure Auditor for SEO. Se requiere poder editar entradas o administrar el sitio.', 'baloa-structure-auditor-seo' ),
+                esc_html__( 'Permisos insuficientes', 'baloa-structure-auditor-seo' ),
                 [ 'response' => 403 ]
             );
         }
 
-        \SEOSI\Core\ViewRenderer::render_echo( 'admin-page' );
+        \BaloaStructureAuditorSEO\Core\ViewRenderer::render_echo( 'admin-page' );
     }
 
     /**
@@ -82,13 +82,13 @@ class AdminPage {
      */
     public static function render_readiness(): void {
         if ( ! Capabilities::user_can_manage_settings() ) {
-            wp_die( esc_html__( 'No tienes permisos para ver esta página.', 'seo-si' ) );
+            wp_die( esc_html__( 'No tienes permisos para ver esta página.', 'baloa-structure-auditor-seo' ) );
         }
 
-        $results = \SEOSI\Core\ReadinessChecker::run();
+        $results = \BaloaStructureAuditorSEO\Core\ReadinessChecker::run();
         ?>
         <div class="wrap">
-            <h1>SEO Structure Inspector - Readiness Checker</h1>
+            <h1>Baloa Structure Auditor for SEO - Readiness Checker</h1>
             <p>System readiness check for plugin deployment.</p>
 
             <div class="card" style="max-width: 800px; margin-top: 20px;">
@@ -127,21 +127,21 @@ class AdminPage {
 
     public static function add_reversion_page(): void {
         add_submenu_page(
-            'seo-structure-inspector',
-            __( 'Control de Cambios', 'seo-si' ),
-            __( 'Control de Cambios', 'seo-si' ),
+            'baloa-structure-auditor-seo',
+            __( 'Control de Cambios', 'baloa-structure-auditor-seo' ),
+            __( 'Control de Cambios', 'baloa-structure-auditor-seo' ),
             Capabilities::manage_settings(),
-            'seosi-reversion',
+            'baloa-reversion',
             [ __CLASS__, 'render_reversion_page' ]
         );
     }
 
     public static function render_reversion_page(): void {
         if ( ! Capabilities::user_can_manage_settings() ) {
-            wp_die( esc_html__( 'No tienes permisos para ver esta página.', 'seo-si' ) );
+            wp_die( esc_html__( 'No tienes permisos para ver esta página.', 'baloa-structure-auditor-seo' ) );
         }
 
-        \SEOSI\Core\ViewRenderer::render_echo( 'reversion-page' );
+        \BaloaStructureAuditorSEO\Core\ViewRenderer::render_echo( 'reversion-page' );
     }
 
     /**
@@ -152,13 +152,13 @@ class AdminPage {
             return;
         }
         ?>
-        <tr class="active plugin-update-tr seosi-plugin-warning-tr" id="seosi-warning-row" data-slug="seo-structure-inspector">
+        <tr class="active plugin-update-tr baloa-plugin-warning-tr" id="baloa-warning-row" data-slug="baloa-structure-auditor-seo">
             <td colspan="4" class="plugin-update colspanchange">
                 <div class="notice inline notice-warning notice-alt" style="margin: 5px 20px 15px 20px; display: block; border-left-color: #f59e0b;">
                     <p style="font-size: 13px; font-weight: 500; margin: 0.5em 0;">
                         <span class="dashicons dashicons-warning" style="color: #f59e0b; vertical-align: text-bottom; margin-right: 5px; font-size: 18px; width: 18px; height: 18px;"></span>
-                        <strong><?php esc_html_e( 'Atención:', 'seo-si' ); ?></strong> <?php esc_html_e( 'Si desinstalas y eliminas este plugin, todas las optimizaciones aplicadas (como meta descripciones, títulos alternativos, marcado JSON-LD y archivos llms.txt) se purgarán de forma permanente e irreversible de la base de datos.', 'seo-si' ); ?>
-                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=seosi-reversion' ) ); ?>"><?php esc_html_e( 'Gestionar correcciones y copias de seguridad', 'seo-si' ); ?></a>
+                        <strong><?php esc_html_e( 'Atención:', 'baloa-structure-auditor-seo' ); ?></strong> <?php esc_html_e( 'Si desinstalas y eliminas este plugin, todas las optimizaciones aplicadas (como meta descripciones, títulos alternativos, marcado JSON-LD y archivos llms.txt) se purgarán de forma permanente e irreversible de la base de datos.', 'baloa-structure-auditor-seo' ); ?>
+                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=baloa-reversion' ) ); ?>"><?php esc_html_e( 'Gestionar correcciones y copias de seguridad', 'baloa-structure-auditor-seo' ); ?></a>
                     </p>
                 </div>
             </td>

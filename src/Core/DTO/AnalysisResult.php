@@ -1,14 +1,14 @@
 <?php
 /**
- * SEOSI\Core\DTO\AnalysisResult
+ * BaloaStructureAuditorSEO\Core\DTO\AnalysisResult
  * 
  * DTO for the complete analysis result.
  * Aggregates all module results with metadata.
  */
 
-namespace SEOSI\Core\DTO;
+namespace BaloaStructureAuditorSEO\Core\DTO;
 
-use SEOSI\Core\DTO\ModuleResult;
+use BaloaStructureAuditorSEO\Core\DTO\ModuleResult;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -23,10 +23,12 @@ readonly class AnalysisResult {
     public ?ModuleResult $metatags;
     public ?ModuleResult $llms;
     public ?ModuleResult $aeo;
+    public ?ModuleResult $geo;
     public ?ModuleResult $cwv;
     public ?ModuleResult $cwvMobile;
     public ?ModuleResult $cwvDesktop;
     public ?ModuleResult $links;
+    public ?ModuleResult $images;
     public string $strategy;
     public int $analyzedAt;
 
@@ -40,10 +42,12 @@ readonly class AnalysisResult {
         ?ModuleResult $metatags,
         ?ModuleResult $llms,
         ?ModuleResult $aeo,
+        ?ModuleResult $geo,
         ?ModuleResult $cwv,
         ?ModuleResult $cwvMobile,
         ?ModuleResult $cwvDesktop,
         ?ModuleResult $links,
+        ?ModuleResult $images,
         string $strategy,
         int $analyzedAt
     ) {
@@ -56,10 +60,12 @@ readonly class AnalysisResult {
         $this->metatags    = $metatags;
         $this->llms        = $llms;
         $this->aeo         = $aeo;
+        $this->geo         = $geo;
         $this->cwv         = $cwv;
         $this->cwvMobile   = $cwvMobile;
         $this->cwvDesktop  = $cwvDesktop;
         $this->links       = $links;
+        $this->images      = $images;
         $this->strategy    = $strategy;
         $this->analyzedAt = $analyzedAt;
     }
@@ -99,6 +105,9 @@ readonly class AnalysisResult {
         if ( $this->aeo !== null ) {
             $result['aeo'] = $this->aeo->toArray();
         }
+        if ( $this->geo !== null ) {
+            $result['geo'] = $this->geo->toArray();
+        }
         if ( $this->cwv !== null ) {
             $result['cwv'] = $this->cwv->toArray();
         }
@@ -110,6 +119,9 @@ readonly class AnalysisResult {
         }
         if ( $this->links !== null ) {
             $result['links'] = $this->links->toArray();
+        }
+        if ( $this->images !== null ) {
+            $result['images'] = $this->images->toArray();
         }
 
         return $result;
@@ -132,10 +144,12 @@ readonly class AnalysisResult {
             metatags:    isset( $data['metatags'] ) ? ModuleResult::fromArray( $data['metatags'] ) : null,
             llms:        isset( $data['llms'] ) ? ModuleResult::fromArray( $data['llms'] ) : null,
             aeo:         isset( $data['aeo'] ) ? ModuleResult::fromArray( $data['aeo'] ) : null,
+            geo:         isset( $data['geo'] ) ? ModuleResult::fromArray( $data['geo'] ) : null,
             cwv:         isset( $data['cwv'] ) ? ModuleResult::fromArray( $data['cwv'] ) : null,
             cwvMobile:   isset( $data['cwv_mobile'] ) ? ModuleResult::fromArray( $data['cwv_mobile'] ) : null,
             cwvDesktop:  isset( $data['cwv_desktop'] ) ? ModuleResult::fromArray( $data['cwv_desktop'] ) : null,
             links:       isset( $data['links'] ) ? ModuleResult::fromArray( $data['links'] ) : null,
+            images:      isset( $data['images'] ) ? ModuleResult::fromArray( $data['images'] ) : null,
             strategy:    $data['strategy'] ?? 'direct',
             analyzedAt:  $data['analyzed_at'] ?? time(),
         );

@@ -1,10 +1,10 @@
 <?php
 /**
- * SEOSI\Admin\MetaBox
- * Meta box — appears inside the post/page editor.
+ * BaloaStructureAuditorSEO\Admin\MetaBox
+ * Meta box â€” appears inside the post/page editor.
  */
 
-namespace SEOSI\Admin;
+namespace BaloaStructureAuditorSEO\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -19,8 +19,8 @@ class MetaBox {
         $screens = [ 'post', 'page' ];
         foreach ( $screens as $screen ) {
             add_meta_box(
-                'seosi-meta-box',
-                '⬡ SEO Structure Inspector',
+                'baloa-meta-box',
+                'â¬¡ Baloa Structure Auditor for SEO',
                 [ __CLASS__, 'render' ],
                 $screen,
                 'normal',
@@ -31,21 +31,28 @@ class MetaBox {
 
     public static function render( \WP_Post $post ): void {
         $permalink = get_permalink( $post->ID ) ?: '';
-        $keyword   = get_post_meta( $post->ID, '_seosi_keyword', true );
+        $keyword   = get_post_meta( $post->ID, '_baloa_keyword', true );
 
-        \SEOSI\Core\ViewRenderer::render_echo( 'meta-box', compact( 'permalink', 'keyword' ) );
+        \BaloaStructureAuditorSEO\Core\ViewRenderer::render_echo( 'meta-box', compact( 'permalink', 'keyword' ) );
     }
 
     public static function save_keyword( int $post_id ): void {
+        $raw_nonce = isset( $_POST['baloa_structure_auditor_seo_keyword_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['baloa_structure_auditor_seo_keyword_nonce'] ) ) : '';
         if (
-            ! isset( $_POST['seosi_keyword_nonce'] ) ||
-            ! wp_verify_nonce( $_POST['seosi_keyword_nonce'], 'seosi_save_keyword' )
-        ) return;
+            empty( $raw_nonce ) ||
+            ! wp_verify_nonce( $raw_nonce, 'baloa_structure_auditor_seo_save_keyword' )
+        ) {
+            return;
+        }
 
-        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-        if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+            return;
+        }
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            return;
+        }
 
-        $keyword = sanitize_text_field( $_POST['seosi_keyword'] ?? '' );
-        update_post_meta( $post_id, '_seosi_keyword', $keyword );
+        $keyword     = isset( $_POST['baloa_structure_auditor_seo_keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['baloa_structure_auditor_seo_keyword'] ) ) : '';
+        update_post_meta( $post_id, '_baloa_keyword', $keyword );
     }
 }

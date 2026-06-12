@@ -1,31 +1,31 @@
 <?php
 /**
- * SEOSI\Api\RestController
+ * BaloaStructureAuditorSEO\Api\RestController
  * 
- * REST API endpoints for SEO Structure Inspector.
+ * REST API endpoints for Baloa Structure Auditor for SEO.
  * Allows external integrations via WordPress REST API with Application Passwords.
  */
 
-namespace SEOSI\Api;
+namespace BaloaStructureAuditorSEO\Api;
 
-use SEOSI\Core\Capabilities;
-use SEOSI\Services\AnalysisService;
-use SEOSI\Pro\Services\HistoryService;
-use SEOSI\Services\FetcherService;
-use SEOSI\Core\ResultPresenter;
+use BaloaStructureAuditorSEO\Core\Capabilities;
+use BaloaStructureAuditorSEO\Services\AnalysisService;
+use BaloaStructureAuditorSEO\Pro\Services\HistoryService;
+use BaloaStructureAuditorSEO\Services\FetcherService;
+use BaloaStructureAuditorSEO\Core\ResultPresenter;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class RestController {
 
-    const RATE_LIMIT_KEY = 'seosi_rest_rate_limit';
+    const RATE_LIMIT_KEY = 'baloa_structure_auditor_seo_rest_rate_limit';
     const RATE_LIMIT_MAX = 60; // 60 requests per hour
 
     /**
      * Register REST API routes.
      */
     public static function register_routes(): void {
-        register_rest_route( 'seosi/v1', '/analyze', [
+        register_rest_route( 'baloa-structure-auditor-seo/v1', '/analyze', [
             'methods'  => [ 'GET', 'POST' ],
             'callback' => [ __CLASS__, 'analyze' ],
             'permission_callback' => [ __CLASS__, 'check_permission' ],
@@ -53,7 +53,7 @@ class RestController {
             ],
         ] );
 
-        register_rest_route( 'seosi/v1', '/history/(?P<post_id>\d+)', [
+        register_rest_route( 'baloa-structure-auditor-seo/v1', '/history/(?P<post_id>\d+)', [
             'methods'  => 'GET',
             'callback' => [ __CLASS__, 'get_history' ],
             'permission_callback' => [ __CLASS__, 'check_permission' ],
@@ -117,7 +117,7 @@ class RestController {
         if ( ! self::check_rate_limit() ) {
             return new \WP_REST_Response( [
                 'success' => false,
-                'message' => __( 'Rate limit exceeded. Maximum 60 requests per hour.', 'seo-si' ),
+                'message' => __( 'Rate limit exceeded. Maximum 60 requests per hour.', 'baloa-structure-auditor-seo' ),
             ], 429 );
         }
 
@@ -136,13 +136,13 @@ class RestController {
 
             $html     = $fetched['html'];
             $strategy = $fetched['strategy'];
-            $api_key  = sanitize_text_field( \SEOSI\Admin\Settings::get_option( 'pagespeed_api_key' ) );
+            $api_key  = sanitize_text_field( \BaloaStructureAuditorSEO\Admin\Settings::get_option( 'pagespeed_api_key' ) );
             $results  = AnalysisService::analyze( $html, $url, $keyword, $api_key );
         } catch ( \Throwable $e ) {
-            error_log( '[SEOSI] REST analyze: ' . $e->getMessage() );
+            \BaloaStructureAuditorSEO\Core\Logger::error( 'REST analyze: ' . $e->getMessage() );
             return new \WP_REST_Response( [
                 'success' => false,
-                'message' => __( 'Error interno durante el análisis.', 'seo-si' ),
+                'message' => __( 'Error interno durante el análisis.', 'baloa-structure-auditor-seo' ),
             ], 500 );
         }
         $result_array = $results->toArray();
@@ -159,7 +159,7 @@ class RestController {
             'data'    => $result_array,
             'meta'    => [
                 'analyzed_at'    => time(),
-                'plugin_version' => SEOSI_VERSION,
+                'plugin_version' => BALOA_STRUCTURE_AUDITOR_SEO_VERSION,
                 'strategy'       => $strategy,
             ],
         ], 200 );
@@ -169,11 +169,11 @@ class RestController {
      * REST API endpoint for getting post history.
      */
     public static function get_history( \WP_REST_Request $request ): \WP_REST_Response {
-        $is_premium = \SEOSI\Core\Plugin::get_instance()->get_license()->is_premium();
+        $is_premium = \BaloaStructureAuditorSEO\Core\Plugin::get_instance()->get_license()->is_premium();
         if ( ! $is_premium ) {
             return new \WP_REST_Response( [
                 'success' => false,
-                'message' => __( 'Esta característica requiere la versión PRO de SEO Structure Inspector.', 'seo-si' ),
+                'message' => __( 'Esta característica requiere la versión PRO de Baloa Structure Auditor for SEO.', 'baloa-structure-auditor-seo' ),
             ], 403 );
         }
 

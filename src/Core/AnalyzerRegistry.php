@@ -1,14 +1,14 @@
 <?php
 /**
- * SEOSI\Core\AnalyzerRegistry
+ * BaloaStructureAuditorSEO\Core\AnalyzerRegistry
  * 
  * Central registry for dynamically registering and fetching SEO analyzers.
  * Ensures strict compliance with the Open/Closed Principle (OCP).
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
-use SEOSI\Core\Contracts\AnalyzerInterface;
+use BaloaStructureAuditorSEO\Core\Contracts\AnalyzerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -36,7 +36,7 @@ class AnalyzerRegistry {
         if ( is_subclass_of( $class, AnalyzerInterface::class ) ) {
             self::$analyzers[ $key ] = $class;
         } else {
-            error_log( sprintf( '[SEOSI] Class %s must implement AnalyzerInterface to be registered.', $class ) );
+            Logger::error( sprintf( 'Class %s must implement AnalyzerInterface to be registered.', $class ) );
         }
     }
 

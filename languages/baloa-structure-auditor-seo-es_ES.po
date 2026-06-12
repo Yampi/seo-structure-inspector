@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Domain: seo-si\n"
+"X-Domain: baloa-structure-auditor-seo\n"
 
 msgid "Recommended Schema field"
 msgstr "Campo recomendado de Schema"

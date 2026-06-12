@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Core\Contracts\LicenseProviderInterface
+ * BaloaStructureAuditorSEO\Core\Contracts\LicenseProviderInterface
  * 
  * Agnostic license contract to prevent provider lock-in.
  */
 
-namespace SEOSI\Core\Contracts;
+namespace BaloaStructureAuditorSEO\Core\Contracts;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 

@@ -1,12 +1,12 @@
 <?php
 /**
- * SEOSI\Core\ReadinessChecker
+ * BaloaStructureAuditorSEO\Core\ReadinessChecker
  * 
  * Checks system readiness for plugin deployment.
  * Verifies PHP/WordPress requirements, security, and functionality.
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -104,7 +104,7 @@ class ReadinessChecker {
      * Check text domain is loaded
      */
     private static function check_text_domain(): array {
-        $loaded = is_textdomain_loaded( 'seo-si' );
+        $loaded = is_textdomain_loaded( 'baloa-structure-auditor-seo' );
         
         return [
             'status' => $loaded ? 'pass' : 'warn',
@@ -116,7 +116,7 @@ class ReadinessChecker {
      * Check translation files exist
      */
     private static function check_translation_files(): array {
-        $lang_dir = SEOSI_DIR . 'languages/';
+        $lang_dir = BALOA_STRUCTURE_AUDITOR_SEO_DIR . 'languages/';
         $exists = is_dir( $lang_dir );
 
         return [
@@ -129,7 +129,7 @@ class ReadinessChecker {
      * Check uninstall.php exists
      */
     private static function check_uninstall_exists(): array {
-        $exists = file_exists( SEOSI_DIR . 'uninstall.php' );
+        $exists = file_exists( BALOA_STRUCTURE_AUDITOR_SEO_DIR . 'uninstall.php' );
 
         return [
             'status' => $exists ? 'pass' : 'fail',
@@ -141,7 +141,7 @@ class ReadinessChecker {
      * Check readme.txt exists
      */
     private static function check_readme_exists(): array {
-        $exists = file_exists( SEOSI_DIR . 'readme.txt' );
+        $exists = file_exists( BALOA_STRUCTURE_AUDITOR_SEO_DIR . 'readme.txt' );
 
         return [
             'status' => $exists ? 'pass' : 'fail',
@@ -153,7 +153,7 @@ class ReadinessChecker {
      * Check sslverify is true in wp_remote_get calls
      */
     private static function check_ssl_verify(): array {
-        $fetcher_file = SEOSI_DIR . 'src/Services/FetcherService.php';
+        $fetcher_file = BALOA_STRUCTURE_AUDITOR_SEO_DIR . 'src/Services/FetcherService.php';
         $content = file_get_contents( $fetcher_file );
         $has_sslverify = strpos( $content, "'sslverify'" ) !== false;
 
@@ -167,7 +167,7 @@ class ReadinessChecker {
      * Check for var_dump, print_r, error_log in code
      */
     private static function check_no_debug_outputs(): array {
-        $src_dir = SEOSI_DIR . 'src/';
+        $src_dir = BALOA_STRUCTURE_AUDITOR_SEO_DIR . 'src/';
         $found = false;
 
         $iterator = new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $src_dir ) );
@@ -191,7 +191,7 @@ class ReadinessChecker {
      * Check AJAX handlers have nonce verification
      */
     private static function check_ajax_nonce(): array {
-        $handlers_file = SEOSI_DIR . 'src/Ajax/Handlers.php';
+        $handlers_file = BALOA_STRUCTURE_AUDITOR_SEO_DIR . 'src/Ajax/Handlers.php';
         $content = file_get_contents( $handlers_file );
         $has_nonce = strpos( $content, 'check_ajax_referer' ) !== false;
 
@@ -205,7 +205,7 @@ class ReadinessChecker {
      * Check templates escape outputs
      */
     private static function check_template_escaping(): array {
-        $templates_dir = SEOSI_DIR . 'templates/';
+        $templates_dir = BALOA_STRUCTURE_AUDITOR_SEO_DIR . 'templates/';
         $escaped = true;
 
         if ( is_dir( $templates_dir ) ) {
@@ -229,7 +229,7 @@ class ReadinessChecker {
      * Check WP-Cron event is registered
      */
     private static function check_cron_registered(): array {
-        $hook = \SEOSI\Services\SchedulerService::CRON_HOOK;
+        $hook = \BaloaStructureAuditorSEO\Services\SchedulerService::CRON_HOOK;
         $scheduled = wp_next_scheduled( $hook );
 
         return [

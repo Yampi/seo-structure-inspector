@@ -1,11 +1,39 @@
 <?php
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class ResultPresenter {
     public static function localize_analysis_results( array $results ): array {
+        // Merge 'geo' checks and details into 'llms' to unify GEO / LLMs under a single frontend module
+        if ( isset( $results['geo'] ) && is_array( $results['geo'] ) ) {
+            if ( ! isset( $results['llms'] ) || ! is_array( $results['llms'] ) ) {
+                $results['llms'] = [
+                    'score'    => 0,
+                    'checks'   => [],
+                    'issues'   => [],
+                    'warnings' => [],
+                    'passed'   => [],
+                    'details'  => [],
+                    'skipped'  => false,
+                    'error'    => null,
+                ];
+            }
+            $geo_checks = $results['geo']['checks'] ?? [];
+            $llms_checks = $results['llms']['checks'] ?? [];
+            
+            // Combine checks
+            $combined_checks = array_merge( $llms_checks, $geo_checks );
+            $results['llms']['checks'] = ScoringEngine::normalize_checks( $combined_checks );
+            
+            // Combine details
+            $results['llms']['details'] = array_merge( $results['llms']['details'] ?? [], $results['geo']['details'] ?? [] );
+            
+            // Recalculate combined score
+            $results['llms']['score'] = ScoringEngine::calculate_score( $results['llms']['checks'] );
+        }
+
         $modules = [ 'html', 'keyword', 'schema', 'readability', 'metatags', 'llms', 'aeo', 'cwv', 'links' ];
 
         foreach ( $modules as $mod ) {
@@ -19,23 +47,21 @@ class ResultPresenter {
     private static function localize_module_result( array $module, string $mod_key, string $url ): array {
         if ( empty( $module['checks'] ) || ! is_array( $module['checks'] ) ) return $module;
 
+        $t      = static fn( string $s ): string => $s;
         $checks = $module['checks'];
-        $t      = static fn( string $s ): string => __( $s, 'seo-si' );
 
         foreach ( $checks as &$check ) {
             if ( ! is_array( $check ) ) continue;
 
             $check_id = $check['id'] ?? '';
-            if ( ! empty( $check_id ) ) {
-                if ( ! class_exists( '\SEOSI\Services\AutoFixService' ) ) {
-                    $dir = defined( 'SEOSI_DIR' ) ? SEOSI_DIR : dirname( __DIR__, 2 ) . '/';
-                    require_once $dir . 'src/Services/AutoFixService.php';
-                }
-                $autofix_info = \SEOSI\Services\AutoFixService::get_autofix_info( $check_id, $mod_key, $url );
+            if ( ! empty( $check_id ) && Plugin::get_instance()->get_license()->is_premium() && class_exists( '\BaloaStructureAuditorSEO\Pro\Services\AutoFixService' ) ) {
+                $autofix_info = \BaloaStructureAuditorSEO\Pro\Services\AutoFixService::get_autofix_info( $check_id, $mod_key, $url );
                 $check['supports_autofix'] = ! empty( $autofix_info['available'] );
+            } else {
+                $check['supports_autofix'] = false;
             }
 
-            if ( CheckCatalog::present( $check, static fn( string $s ): string => $s ) === null ) continue;
+            if ( CheckCatalog::present( $check ) === null ) continue;
 
             foreach ( [ 'title', 'problem', 'why', 'how', 'message', 'recommendation' ] as $k ) {
                 if ( ! array_key_exists( $k, $check ) ) continue;

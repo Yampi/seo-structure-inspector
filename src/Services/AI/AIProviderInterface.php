@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Services\AI\AIProviderInterface
+ * BaloaStructureAuditorSEO\Services\AI\AIProviderInterface
  *
  * Contract for all AI recommendation engines/providers.
  */
 
-namespace SEOSI\Services\AI;
+namespace BaloaStructureAuditorSEO\Services\AI;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 

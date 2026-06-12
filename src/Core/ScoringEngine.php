@@ -1,8 +1,8 @@
 <?php
 /**
- * SEOSI\Core\ScoringEngine
+ * BaloaStructureAuditorSEO\Core\ScoringEngine
  *
- * Central scoring engine for SEO Structure Inspector.
+ * Central scoring engine for Baloa Structure Auditor for SEO.
  * All modules must return checks in the standard format and
  * delegate score calculation to this class.
  *
@@ -20,37 +20,34 @@
  * @since   0.3.0
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
-use SEOSI\Core\DTO\ModuleResult;
-use SEOSI\Core\DTO\AnalysisResult;
+use BaloaStructureAuditorSEO\Core\DTO\ModuleResult;
+use BaloaStructureAuditorSEO\Core\DTO\AnalysisResult;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class ScoringEngine {
 
-    // ── Severity weights ──────────────────────────────────────────────────────
+    // â”€â”€ Severity weights â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // errors cost more; passes earn points; warnings are advisory
     const WEIGHT_ERROR   = 2;
     const WEIGHT_WARNING = 1;
     const WEIGHT_PASS    = 1;
 
-    // ── Module weights for global score calculation ─────────────────────────
-    // Higher weight = more impact on global score
-    const MODULE_WEIGHTS = [
-        'html'        => 1.0, // SEO Estructural
-        'keyword'     => 1.0, // EEAT
-        'schema'      => 1.2,
-        'readability' => 0.8,
-        'metatags'    => 1.0,
-        'llms'        => 2.5, // GEO / LLMs - Peso predominante
-        'aeo'         => 2.5, // AEO - Peso predominante
-        'cwv'         => 1.0, // Core Web Vitals
-        'links'       => 1.0,
-    ];
+    // ── Module weights for global score calculation ─────────────────────
+    /**
+     * Get default module weights.
+     * Single source of truth: Settings::get_defaults()['module_weights']
+     *
+     * @return array
+     */
+    public static function get_default_weights(): array {
+        return \BaloaStructureAuditorSEO\Admin\Settings::get_defaults()['module_weights'];
+    }
 
     /**
-     * Calculate a 0–100 score from a set of checks.
+     * Calculate a 0â€“100 score from a set of checks.
      *
      * Formula: pass_points / total_points * 100
      * - Each pass  counts as WEIGHT_PASS   point(s) earned
@@ -62,7 +59,7 @@ class ScoringEngine {
      *
      * @param array $checks          Array of standard check arrays.
      * @param array $weight_overrides Optional map of check_id => weight multiplier.
-     * @return int Score 0–100.
+     * @return int Score 0â€“100.
      */
     public static function calculate_score( array $checks, array $weight_overrides = [] ): int {
         if ( empty( $checks ) ) return 0;
@@ -74,7 +71,7 @@ class ScoringEngine {
             $severity = $check['severity'] ?? 'warning';
             $id       = $check['id']       ?? '';
 
-            // 'info' severity is purely informational — does not affect score.
+            // 'info' severity is purely informational â€” does not affect score.
             if ( $severity === 'info' ) {
                 continue;
             }
@@ -188,7 +185,7 @@ class ScoringEngine {
 
     /**
      * Validate that a check array has the required fields.
-     * Use during development/debug — not in production hot paths.
+     * Use during development/debug â€” not in production hot paths.
      *
      * @param array $check
      * @return bool
@@ -210,10 +207,10 @@ class ScoringEngine {
      */
     public static function calculate_global_score( AnalysisResult $result ): int {
         // Get weights from Settings (allows Pro versions to customize)
-        $settings_weights = \SEOSI\Admin\Settings::get_option( 'module_weights', self::MODULE_WEIGHTS );
+        $settings_weights = \BaloaStructureAuditorSEO\Admin\Settings::get_option( 'module_weights' );
         
         // Allow filtering of module weights via hook
-        $weights = apply_filters( 'seosi_module_weights', $settings_weights );
+        $weights = apply_filters( 'baloa_structure_auditor_seo_module_weights', $settings_weights );
 
         $weighted_sum = 0.0;
         $total_weight = 0.0;
@@ -226,6 +223,7 @@ class ScoringEngine {
             'metatags'    => $result->metatags,
             'llms'        => $result->llms,
             'aeo'         => $result->aeo,
+            'geo'         => $result->geo,
             'cwv'         => $result->cwv,
             'cwvMobile'   => $result->cwvMobile,
             'cwvDesktop'  => $result->cwvDesktop,

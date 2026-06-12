@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Analyzers\Links\CanonicalCheck
+ * BaloaStructureAuditorSEO\Analyzers\Links\CanonicalCheck
  * 
  * Checks canonical URL presence and correctness.
  */
 
-namespace SEOSI\Analyzers\Links;
+namespace BaloaStructureAuditorSEO\Analyzers\Links;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 

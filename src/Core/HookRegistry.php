@@ -1,21 +1,21 @@
 <?php
 /**
- * SEOSI\Core\HookRegistry
+ * BaloaStructureAuditorSEO\Core\HookRegistry
  *
  * Centralized hook registration for the entire plugin.
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
-use SEOSI\Admin\Settings;
-use SEOSI\Admin\MetaBox;
-use SEOSI\Admin\AdminPage;
-use SEOSI\Ajax\Handlers;
-use SEOSI\Api\RestController;
-use SEOSI\Pro\Services\SchedulerService;
-use SEOSI\Pro\Services\AutoFixService;
-use SEOSI\Pro\Services\StructuralFixerService;
-use SEOSI\Pro\Services\FAQSchemaService;
+use BaloaStructureAuditorSEO\Admin\Settings;
+use BaloaStructureAuditorSEO\Admin\MetaBox;
+use BaloaStructureAuditorSEO\Admin\AdminPage;
+use BaloaStructureAuditorSEO\Ajax\Handlers;
+use BaloaStructureAuditorSEO\Api\RestController;
+use BaloaStructureAuditorSEO\Pro\Services\SchedulerService;
+use BaloaStructureAuditorSEO\Pro\Services\AutoFixService;
+use BaloaStructureAuditorSEO\Pro\Services\StructuralFixerService;
+use BaloaStructureAuditorSEO\Pro\Services\FAQSchemaService;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -27,14 +27,25 @@ class HookRegistry {
             return;
         }
 
-        // Initialize licensing provider and register dynamic analyzers
-        self::initialize_licensing_and_analyzers();
+        // Initialize licensing provider, register dynamic analyzers and Pro hooks on plugins_loaded
+        add_action( 'plugins_loaded', [ __CLASS__, 'init_premium_and_analyzers' ], 15 );
 
         self::register_plugin_bootstrap();
         self::register_admin_ui();
         self::register_ajax_handlers();
         self::register_rest_api();
-        
+
+        self::register_assets();
+        self::register_i18n();
+    }
+
+    /**
+     * Delayed initialization of license, analyzers, and premium hooks
+     * to avoid race conditions with the Pro add-on load priority.
+     */
+    public static function init_premium_and_analyzers(): void {
+        self::initialize_licensing_and_analyzers();
+
         // Conditionally register premium features
         $is_premium = Plugin::get_instance()->get_license()->is_premium();
         if ( $is_premium ) {
@@ -42,15 +53,15 @@ class HookRegistry {
             self::register_autofix();
             self::register_structural_fixer();
             self::register_faq_schema();
+            
+            // Core Web Vitals RUM, AI crawler, and semantic schema hooks
+            self::register_pro_services();
         }
-
-        self::register_assets();
-        self::register_i18n();
     }
 
     public static function render_missing_plugin_notice(): void {
         echo '<div class="notice notice-error"><p>';
-        echo esc_html__( 'SEO Structure Inspector: clase Plugin no disponible.', 'seo-si' );
+        echo esc_html__( 'Baloa Structure Auditor for SEO: clase Plugin no disponible.', 'baloa-structure-auditor-seo' );
         echo '</p></div>';
     }
 
@@ -59,24 +70,28 @@ class HookRegistry {
      */
     private static function initialize_licensing_and_analyzers(): void {
         // Instantiate and set the local license provider
-        if ( class_exists( \SEOSI\Infrastructure\Licensing\LocalLicenseProvider::class ) ) {
-            $license_provider = new \SEOSI\Infrastructure\Licensing\LocalLicenseProvider();
+        if ( class_exists( \BaloaStructureAuditorSEO\Infrastructure\Licensing\LocalLicenseProvider::class ) ) {
+            $license_provider = new \BaloaStructureAuditorSEO\Infrastructure\Licensing\LocalLicenseProvider();
             Plugin::get_instance()->set_license_provider( $license_provider );
         }
 
         // Register Free Analyzers
-        if ( class_exists( \SEOSI\Core\AnalyzerRegistry::class ) ) {
-            \SEOSI\Core\AnalyzerRegistry::register( 'html', \SEOSI\Free\Analyzers\HTMLInspector::class );
-            \SEOSI\Core\AnalyzerRegistry::register( 'metatags', \SEOSI\Free\Analyzers\MetaTagsAnalyzer::class );
-            \SEOSI\Core\AnalyzerRegistry::register( 'schema', \SEOSI\Free\Analyzers\SchemaChecker::class );
-            \SEOSI\Core\AnalyzerRegistry::register( 'readability', \SEOSI\Free\Analyzers\ReadabilityAnalyzer::class );
-            \SEOSI\Core\AnalyzerRegistry::register( 'links', \SEOSI\Free\Analyzers\LinksAnalyzer::class );
+        if ( class_exists( \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::class ) ) {
+            \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'html', \BaloaStructureAuditorSEO\Free\Analyzers\HTMLInspector::class );
+            \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'metatags', \BaloaStructureAuditorSEO\Free\Analyzers\MetaTagsAnalyzer::class );
+            \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'schema', \BaloaStructureAuditorSEO\Free\Analyzers\SchemaChecker::class );
+            \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'readability', \BaloaStructureAuditorSEO\Free\Analyzers\ReadabilityAnalyzer::class );
+            \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'links', \BaloaStructureAuditorSEO\Free\Analyzers\LinksAnalyzer::class );
+            \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'images', \BaloaStructureAuditorSEO\Free\Analyzers\ImageAnalyzer::class );
 
             // If Premium, register Pro Analyzers
             $is_premium = Plugin::get_instance()->get_license()->is_premium();
             if ( $is_premium ) {
-                \SEOSI\Core\AnalyzerRegistry::register( 'aeo', \SEOSI\Pro\Analyzers\AEOAnalyzer::class );
-                \SEOSI\Core\AnalyzerRegistry::register( 'llms', \SEOSI\Pro\Analyzers\LLMsChecker::class );
+                \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'aeo', \BaloaStructureAuditorSEO\Pro\Analyzers\AEOAnalyzer::class );
+                \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'llms', \BaloaStructureAuditorSEO\Pro\Analyzers\LLMsChecker::class );
+                \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'geo', \BaloaStructureAuditorSEO\Pro\Analyzers\GEOAnalyzer::class );
+                \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'entities', \BaloaStructureAuditorSEO\Pro\Analyzers\EntityAnalyzer::class );
+                \BaloaStructureAuditorSEO\Core\AnalyzerRegistry::register( 'naturalness', \BaloaStructureAuditorSEO\Pro\Analyzers\NaturalnessAnalyzer::class );
             }
         }
     }
@@ -119,15 +134,17 @@ class HookRegistry {
 
     private static function register_rest_api(): void {
         add_action( 'rest_api_init', function () {
-            if ( ! class_exists( RestController::class ) ) {
-                return;
+            if ( class_exists( RestController::class ) ) {
+                RestController::register_routes();
             }
-            RestController::register_routes();
+            if ( class_exists( \BaloaStructureAuditorSEO\Api\TelemetryController::class ) && Plugin::get_instance()->get_license()->is_premium() ) {
+                \BaloaStructureAuditorSEO\Api\TelemetryController::register_routes();
+            }
         } );
     }
 
     private static function register_cron(): void {
-        add_action( \SEOSI_CRON_HOOK, function () {
+        add_action( \BALOA_STRUCTURE_AUDITOR_SEO_CRON_HOOK, function () {
             if ( ! class_exists( SchedulerService::class ) ) {
                 return;
             }
@@ -177,6 +194,20 @@ class HookRegistry {
                 return;
             }
             FAQSchemaService::register_hooks();
+        }, 20 );
+    }
+
+    private static function register_pro_services(): void {
+        add_action( 'plugins_loaded', function () {
+            if ( class_exists( \BaloaStructureAuditorSEO\Pro\Services\AIControlService::class ) ) {
+                \BaloaStructureAuditorSEO\Pro\Services\AIControlService::register_hooks();
+            }
+            if ( class_exists( \BaloaStructureAuditorSEO\Pro\Services\TelemetryService::class ) ) {
+                \BaloaStructureAuditorSEO\Pro\Services\TelemetryService::register_hooks();
+            }
+            if ( class_exists( \BaloaStructureAuditorSEO\Pro\Services\SchemaGeneratorService::class ) ) {
+                \BaloaStructureAuditorSEO\Pro\Services\SchemaGeneratorService::register_hooks();
+            }
         }, 20 );
     }
 }

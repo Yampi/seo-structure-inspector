@@ -1,13 +1,13 @@
 <?php
 /**
- * SEOSI\Services\Storage\StorageInterface
+ * BaloaStructureAuditorSEO\Services\Storage\StorageInterface
  * 
  * Interface for storage backends.
  * Allows BatchAnalyzer to switch between transients, custom tables, or Redis
  * without changing its logic.
  */
 
-namespace SEOSI\Services\Storage;
+namespace BaloaStructureAuditorSEO\Services\Storage;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 

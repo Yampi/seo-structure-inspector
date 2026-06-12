@@ -1,17 +1,17 @@
 <?php
 /**
- * SEOSI\Core\Logger
+ * BaloaStructureAuditorSEO\Core\Logger
  * Simple logging system for debugging and monitoring.
  * Logs to WordPress debug.log when WP_DEBUG is enabled.
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Logger {
 
-    const LOG_PREFIX = 'SEOSI: ';
+    const LOG_PREFIX = 'BSA: ';
 
     /**
      * Log an info message.
@@ -76,6 +76,7 @@ class Logger {
         }
 
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional: Logger class core functionality
             error_log( $log_entry );
         }
     }

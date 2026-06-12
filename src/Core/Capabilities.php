@@ -1,10 +1,10 @@
 <?php
 /**
- * SEOSI\Core\Capabilities
+ * BaloaStructureAuditorSEO\Core\Capabilities
  * Central capability checks for admin UI, AJAX, and REST.
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -15,21 +15,21 @@ class Capabilities {
      * Default: edit_posts (Administrator, Editor). Filter to manage_options for stricter sites.
      */
     public static function analyze(): string {
-        return apply_filters( 'seosi_cap_analyze', 'edit_posts' );
+        return apply_filters( 'baloa_structure_auditor_seo_cap_analyze', 'edit_posts' );
     }
 
     /**
      * Plugin settings and destructive options.
      */
     public static function manage_settings(): string {
-        return apply_filters( 'seosi_cap_settings', 'manage_options' );
+        return apply_filters( 'baloa_structure_auditor_seo_cap_settings', 'manage_options' );
     }
 
     /**
      * REST API (Application Passwords / integrations).
      */
     public static function rest_api(): string {
-        return apply_filters( 'seosi_cap_rest', self::manage_settings() );
+        return apply_filters( 'baloa_structure_auditor_seo_cap_rest', self::manage_settings() );
     }
 
     public static function user_can_analyze(): bool {

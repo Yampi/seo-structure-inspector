@@ -5,12 +5,12 @@
     "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
-            "SEOSI\\": "src/"
+            "BaloaStructureAuditorSEO\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SEOSI\\Tests\\": "tests/"
+            "BaloaStructureAuditorSEO\\Tests\\": "tests/"
         }
     },
     "require": {

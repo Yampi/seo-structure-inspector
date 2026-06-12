@@ -1,14 +1,14 @@
 <?php
 /**
- * SEOSI\Analyzers\Links\BrokenLinksCheck
+ * BaloaStructureAuditorSEO\Analyzers\Links\BrokenLinksCheck
  * 
  * Checks for broken links using HEAD requests.
  * Classifies links as ok, broken, redirect, or timeout.
  */
 
-namespace SEOSI\Analyzers\Links;
+namespace BaloaStructureAuditorSEO\Analyzers\Links;
 
-use SEOSI\Core\Http;
+use BaloaStructureAuditorSEO\Core\Http;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 

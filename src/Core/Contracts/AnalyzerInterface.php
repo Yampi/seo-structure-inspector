@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Core\Contracts\AnalyzerInterface
+ * BaloaStructureAuditorSEO\Core\Contracts\AnalyzerInterface
  * 
  * Common contract for all analyzer modules.
  */
 
-namespace SEOSI\Core\Contracts;
+namespace BaloaStructureAuditorSEO\Core\Contracts;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -17,7 +17,7 @@ interface AnalyzerInterface {
      * @param string $html     HTML content of the page.
      * @param string $url      URL of the page.
      * @param array  $context  Optional context parameters.
-     * @return array|\SEOSI\Core\DTO\ModuleResult Standard analysis result.
+     * @return array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult Standard analysis result.
      */
-    public static function analyze( string $html, string $url = '', array $context = [] ): array|\SEOSI\Core\DTO\ModuleResult;
+    public static function analyze( string $html, string $url = '', array $context = [] ): array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult;
 }

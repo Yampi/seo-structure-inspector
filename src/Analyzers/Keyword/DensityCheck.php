@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Analyzers\Keyword\DensityCheck
+ * BaloaStructureAuditorSEO\Analyzers\Keyword\DensityCheck
  * 
  * Checks keyword density in the body text.
  */
 
-namespace SEOSI\Analyzers\Keyword;
+namespace BaloaStructureAuditorSEO\Analyzers\Keyword;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -58,7 +58,7 @@ class DensityCheck {
                 'id'       => 'kw_density',
                 'severity' => 'pass',
                 'category' => 'seo',
-                'message'  => "Densidad de keyword correcta: {$density_context} (rango óptimo 0.5%–3%)",
+                'message'  => "Densidad de keyword correcta: {$density_context} (rango óptimo 0.5%-3%)",
                 'context'  => [ 'density' => $density ],
             ];
         }

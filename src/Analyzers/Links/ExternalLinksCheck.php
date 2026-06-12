@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Analyzers\Links\ExternalLinksCheck
+ * BaloaStructureAuditorSEO\Analyzers\Links\ExternalLinksCheck
  * 
  * Checks external links count and links without anchor text.
  */
 
-namespace SEOSI\Analyzers\Links;
+namespace BaloaStructureAuditorSEO\Analyzers\Links;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 

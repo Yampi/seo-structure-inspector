@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Analyzers\Keyword\PositionCheck
+ * BaloaStructureAuditorSEO\Analyzers\Keyword\PositionCheck
  * 
  * Checks keyword presence in strategic positions (title, meta, h1, h2, first paragraph, URL).
  */
 
-namespace SEOSI\Analyzers\Keyword;
+namespace BaloaStructureAuditorSEO\Analyzers\Keyword;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -85,7 +85,7 @@ class PositionCheck {
         $first_p      = $dom->getElementsByTagName( 'p' )->item(0);
         $first_p_text = $first_p ? mb_strtolower( trim( $first_p->textContent ) ) : '';
         $first_p_val  = $first_p
-            ? mb_substr( trim( $first_p->textContent ), 0, 120 ) . '…'
+            ? mb_substr( trim( $first_p->textContent ), 0, 120 ) . '...'
             : '(no encontrado)';
 
         return self::kw_check(

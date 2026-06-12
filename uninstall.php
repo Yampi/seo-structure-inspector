@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall routine for SEO Structure Inspector.
+ * Uninstall routine for Baloa Structure Auditor for SEO.
  * This file is automatically called by WordPress when the plugin is deleted.
  */
 
@@ -8,49 +8,71 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     exit;
 }
 
-// ── Delete plugin options ─────────────────────────────────────────────────────
-delete_option( 'seosi_options' );
-delete_option( 'seosi_url_overrides' );
-delete_option( 'seosi_resolved_checks' );
-delete_option( 'seosi_llms_txt_content' );
-delete_option( 'seosi_llms_full_txt_content' );
+// â”€â”€ Delete plugin options â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Delete plugin options ────────────────────────────────────────────────────────
+delete_option( 'baloa_structure_auditor_seo_options' );
+delete_option( 'baloa_structure_auditor_seo_url_overrides' );
+delete_option( 'baloa_structure_auditor_seo_resolved_checks' );
+delete_option( 'baloa_structure_auditor_seo_llms_txt_content' );
+delete_option( 'baloa_structure_auditor_seo_llms_full_txt_content' );
 
-// ── Delete post meta ──────────────────────────────────────────────────────────
+// ── Delete post meta ────────────────────────────────────────────────────────
 global $wpdb;
-$meta_keys = [
-    '_seosi_meta_desc',
-    '_seosi_schema',
-    '_seosi_meta_title',
-    '_seosi_canonical',
-    '_seosi_robots',
-    '_seosi_og_title',
-    '_seosi_og_desc',
-    '_seosi_og_img',
-    '_seosi_tw_card',
-    '_seosi_tw_title',
-    '_seosi_tw_desc',
-    '_seosi_tw_img',
-    '_seosi_cwv_preload',
-    '_seosi_aeo_tldr',
-    '_seosi_autofill_alt',
-    '_seosi_history',
-    '_seosi_schedule'
+$baloa_structure_auditor_seo_meta_keys = [
+    '_baloa_meta_desc',
+    '_baloa_schema',
+    '_baloa_meta_title',
+    '_baloa_canonical',
+    '_baloa_robots',
+    '_baloa_og_title',
+    '_baloa_og_desc',
+    '_baloa_og_img',
+    '_baloa_tw_card',
+    '_baloa_tw_title',
+    '_baloa_tw_desc',
+    '_baloa_tw_img',
+    '_baloa_cwv_preload',
+    '_baloa_aeo_tldr',
+    '_baloa_autofill_alt',
+    '_baloa_history',
+    '_baloa_schedule',
+    '_baloa_keyword',
+    '_baloa_json_ld_schema'
 ];
 
-$placeholders = implode( ',', array_fill( 0, count( $meta_keys ), '%s' ) );
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 $wpdb->query(
     $wpdb->prepare(
-        "DELETE FROM {$wpdb->postmeta} WHERE meta_key IN ($placeholders)",
-        ...$meta_keys
+        "DELETE FROM {$wpdb->postmeta} WHERE meta_key IN (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+        $baloa_structure_auditor_seo_meta_keys[0],
+        $baloa_structure_auditor_seo_meta_keys[1],
+        $baloa_structure_auditor_seo_meta_keys[2],
+        $baloa_structure_auditor_seo_meta_keys[3],
+        $baloa_structure_auditor_seo_meta_keys[4],
+        $baloa_structure_auditor_seo_meta_keys[5],
+        $baloa_structure_auditor_seo_meta_keys[6],
+        $baloa_structure_auditor_seo_meta_keys[7],
+        $baloa_structure_auditor_seo_meta_keys[8],
+        $baloa_structure_auditor_seo_meta_keys[9],
+        $baloa_structure_auditor_seo_meta_keys[10],
+        $baloa_structure_auditor_seo_meta_keys[11],
+        $baloa_structure_auditor_seo_meta_keys[12],
+        $baloa_structure_auditor_seo_meta_keys[13],
+        $baloa_structure_auditor_seo_meta_keys[14],
+        $baloa_structure_auditor_seo_meta_keys[15],
+        $baloa_structure_auditor_seo_meta_keys[16],
+        $baloa_structure_auditor_seo_meta_keys[17],
+        $baloa_structure_auditor_seo_meta_keys[18]
     )
 );
 
-// ── Delete transients ─────────────────────────────────────────────────────────
+// ── Delete transients ────────────────────────────────────────────────────────
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 $wpdb->query(
     "DELETE FROM {$wpdb->options}
-     WHERE option_name LIKE '_transient_seosi_%'
-     OR option_name LIKE '_transient_timeout_seosi_%'"
+     WHERE option_name LIKE '_transient_baloa_%'
+     OR option_name LIKE '_transient_timeout_baloa_%'"
 );
 
-// ── Clear scheduled cron events ─────────────────────────────────────────────────
-wp_clear_scheduled_hook( 'seosi_run_scheduled' );
+// â”€â”€ Clear scheduled cron events â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+wp_clear_scheduled_hook( 'baloa_structure_auditor_seo_run_scheduled' );

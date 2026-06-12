@@ -1,17 +1,17 @@
 <?php
 /**
- * SEOSI\Core\Http
+ * BaloaStructureAuditorSEO\Core\Http
  * Shared HTTP defaults for wp_remote_* calls.
  */
 
-namespace SEOSI\Core;
+namespace BaloaStructureAuditorSEO\Core;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Http {
 
     public static function sslverify(): bool {
-        return (bool) apply_filters( 'seosi_sslverify', true );
+        return (bool) apply_filters( 'baloa_structure_auditor_seo_sslverify', true );
     }
 
     /**

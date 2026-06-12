@@ -1,22 +1,22 @@
 <?php
 /**
- * SEOSI\Free\Analyzers\KeywordAnalyzer
+ * BaloaStructureAuditorSEO\Free\Analyzers\KeywordAnalyzer
  *
  * Orchestrator for keyword analysis.
  * Delegates to specialized sub-checks for density and position checks.
  *
- * Migrated to SEOSI\Core\ScoringEngine in v0.3.0.
+ * Migrated to BaloaStructureAuditorSEO\Core\ScoringEngine in v0.3.0.
  *
  * @package SEO_Structure_Inspector
  * @since   0.1.0
  */
 
-namespace SEOSI\Free\Analyzers;
+namespace BaloaStructureAuditorSEO\Free\Analyzers;
 
-use SEOSI\Core\ScoringEngine;
-use SEOSI\Core\BaseAnalyzer;
-use SEOSI\Analyzers\Keyword\DensityCheck;
-use SEOSI\Analyzers\Keyword\PositionCheck;
+use BaloaStructureAuditorSEO\Core\ScoringEngine;
+use BaloaStructureAuditorSEO\Core\BaseAnalyzer;
+use BaloaStructureAuditorSEO\Analyzers\Keyword\DensityCheck;
+use BaloaStructureAuditorSEO\Analyzers\Keyword\PositionCheck;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -27,7 +27,7 @@ class KeywordAnalyzer extends BaseAnalyzer {
      * @param string $keyword Target keyword or phrase.
      * @return array Standard module result via ScoringEngine::build_result().
      */
-    public static function analyze( string $html, string $keyword ): array|\SEOSI\Core\DTO\ModuleResult {
+    public static function analyze( string $html, string $keyword ): array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult {
         if ( empty( trim( $keyword ) ) ) {
             return [ 'error' => 'Keyword vacía.' ];
         }
@@ -39,7 +39,7 @@ class KeywordAnalyzer extends BaseAnalyzer {
         $checks  = [];
         $details = [ 'keyword' => $keyword ];
 
-        // ── Position checks ─────────────────────────────────────────────────────
+        // â”€â”€ Position checks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $checks[] = PositionCheck::check_title( $xpath, $kw );
         $checks[] = PositionCheck::check_meta_description( $xpath, $kw );
         $checks[] = PositionCheck::check_h1( $dom, $kw );
@@ -47,11 +47,11 @@ class KeywordAnalyzer extends BaseAnalyzer {
         $checks[] = PositionCheck::check_h2( $dom, $kw );
         $checks[] = PositionCheck::check_url( $xpath, $kw );
 
-        // ── Density check ───────────────────────────────────────────────────────
+        // â”€â”€ Density check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $body_node = $dom->getElementsByTagName( 'body' )->item(0);
         $body_text = $body_node
             ? mb_strtolower( $body_node->textContent )
-            : mb_strtolower( strip_tags( $html ) );
+            : mb_strtolower( wp_strip_all_tags( $html ) );
         $density   = DensityCheck::calculate( $body_text, $kw );
 
         $details['density'] = $density;

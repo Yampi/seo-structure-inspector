@@ -1,21 +1,21 @@
 <?php
 /**
- * SEOSI\Free\Analyzers\SchemaChecker
+ * BaloaStructureAuditorSEO\Free\Analyzers\SchemaChecker
  *
  * Detects and validates Schema.org markup (JSON-LD and microdata).
  *
- * Migrated to SEOSI\Core\ScoringEngine in v0.3.0.
- * Fix: @type can be array or string — normalized before validation.
+ * Migrated to BaloaStructureAuditorSEO\Core\ScoringEngine in v0.3.0.
+ * Fix: @type can be array or string â€” normalized before validation.
  *
  * @package SEO_Structure_Inspector
  * @since   0.1.0
  */
 
-namespace SEOSI\Free\Analyzers;
+namespace BaloaStructureAuditorSEO\Free\Analyzers;
 
-use SEOSI\Core\ScoringEngine;
-use SEOSI\Core\CheckPresenter;
-use SEOSI\Core\BaseAnalyzer;
+use BaloaStructureAuditorSEO\Core\ScoringEngine;
+use BaloaStructureAuditorSEO\Core\CheckPresenter;
+use BaloaStructureAuditorSEO\Core\BaseAnalyzer;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -29,7 +29,7 @@ class SchemaChecker extends BaseAnalyzer {
      * @param array  $context Optional context.
      * @return array Standard module result via ScoringEngine::build_result().
      */
-    public static function analyze( string $html, string $url = '', array $context = [] ): array|\SEOSI\Core\DTO\ModuleResult {
+    public static function analyze( string $html, string $url = '', array $context = [] ): array|\BaloaStructureAuditorSEO\Core\DTO\ModuleResult {
         $dom = self::load_dom( $html );
 
         $json_ld   = self::extract_json_ld( $dom );
@@ -45,7 +45,7 @@ class SchemaChecker extends BaseAnalyzer {
             'schemas'       => [],
         ];
 
-        // ── Presence check ────────────────────────────────────────────────────
+        // â”€â”€ Presence check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( ! $has_schema ) {
             $checks[] = [
                 'id'             => 'schema_present',
@@ -62,7 +62,7 @@ class SchemaChecker extends BaseAnalyzer {
             ];
         }
 
-        // ── JSON-LD analysis ──────────────────────────────────────────────────
+        // â”€â”€ JSON-LD analysis â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         foreach ( $json_ld as $raw ) {
             $data = json_decode( $raw, true );
 
@@ -79,7 +79,7 @@ class SchemaChecker extends BaseAnalyzer {
             $entries = isset( $data['@graph'] ) ? $data['@graph'] : [ $data ];
 
             foreach ( $entries as $entry ) {
-                // @type can be string or array — normalize
+                // @type can be string or array â€” normalize
                 $raw_type            = $entry['@type'] ?? 'Desconocido';
                 $type_display        = is_array( $raw_type ) ? implode( ', ', $raw_type ) : (string) $raw_type;
                 $type_for_validation = is_array( $raw_type ) ? ( $raw_type[0] ?? 'Desconocido' ) : $raw_type;
@@ -107,7 +107,7 @@ class SchemaChecker extends BaseAnalyzer {
             }
         }
 
-        // ── Microdata ─────────────────────────────────────────────────────────
+        // â”€â”€ Microdata â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if ( $microdata['found'] ) {
             $checks[] = [
                 'id'       => 'schema_microdata',
@@ -121,7 +121,7 @@ class SchemaChecker extends BaseAnalyzer {
         return ScoringEngine::build_result( $checks, $details );
     }
 
-    // ── Extractors ────────────────────────────────────────────────────────────
+    // â”€â”€ Extractors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function extract_json_ld( \DOMDocument $dom ): array {
         $xpath   = new \DOMXPath( $dom );
@@ -148,7 +148,7 @@ class SchemaChecker extends BaseAnalyzer {
         ];
     }
 
-    // ── Schema validators ─────────────────────────────────────────────────────
+    // â”€â”€ Schema validators â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static function validate_schema( array $data, string $type ): array {
         $recommended = self::recommended_fields( $type );

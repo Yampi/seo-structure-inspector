@@ -1,0 +1,502 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-base:     #f1f5f9;
+  --bg-raised:   #ffffff;
+  --bg-card:     #f8fafc;
+  --border:      #e2e8f0;
+  --border-hi:   #cbd5e1;
+  --text:        #0f172a;
+  --text-secondary: #334155;
+  --text-muted:  #64748b;
+  
+  --accent:      #3b82f6;
+  --accent-purple: #8b5cf6;
+  
+  --green:       #10b981;
+  --green-bg:    rgba(16, 185, 129, 0.05);
+  --green-bdr:   rgba(16, 185, 129, 0.18);
+  
+  --amber:       #f59e0b;
+  --amber-bg:    rgba(245, 158, 11, 0.05);
+  --amber-bdr:   rgba(245, 158, 11, 0.18);
+  
+  --rose:        #f43f5e;
+  --rose-bg:     rgba(244, 63, 94, 0.05);
+  --rose-bdr:    rgba(244, 63, 94, 0.18);
+
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+  --radius:       12px;
+  --radius-sm:    8px;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+}
+
+body.dark {
+  --bg-base:     #080a11;
+  --bg-raised:   #0d111d;
+  --bg-card:     rgba(255, 255, 255, 0.02);
+  --border:      rgba(255, 255, 255, 0.06);
+  --border-hi:   rgba(255, 255, 255, 0.12);
+  --text:        #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted:  #94a3b8;
+  --green-bg:    rgba(16, 185, 129, 0.08);
+  --green-bdr:   rgba(16, 185, 129, 0.2);
+  --amber-bg:    rgba(245, 158, 11, 0.08);
+  --amber-bdr:   rgba(245, 158, 11, 0.2);
+  --rose-bg:     rgba(244, 63, 94, 0.08);
+  --rose-bdr:    rgba(244, 63, 94, 0.2);
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.5;
+  transition: background .3s, color .3s;
+}
+
+.report-container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+/* Page boundaries modeled strictly for A4/Carta print dimensions */
+.pdf-page {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  page-break-after: always;
+  position: relative;
+  overflow: hidden;
+  min-height: 1060px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.pdf-page:last-child {
+  page-break-after: avoid;
+  margin-bottom: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   THEME TOGGLE
+   ═══════════════════════════════════════════════════ */
+.theme-btn {
+  position: fixed; top: 28px; right: 28px; z-index: 999;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s ease;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+}
+.theme-btn:hover { transform: scale(1.05) rotate(15deg); border-color: var(--border-hi); }
+.theme-btn svg { width: 18px; height: 18px; }
+body.dark .icon-sun  { display: block; }
+body:not(.dark) .icon-sun  { display: none; }
+body.dark .icon-moon { display: none; }
+body:not(.dark) .icon-moon { display: block; }
+
+/* ═══════════════════════════════════════════════════
+   PAGE HEADER
+   ═══════════════════════════════════════════════════ */
+.slim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+.header-left {
+  flex: 1;
+  min-width: 0;
+}
+.badge-audit {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--accent-purple);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+.domain-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.url-desc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  word-break: break-all;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kwd-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+}
+.header-right {
+  margin-left: 20px;
+  flex-shrink: 0;
+}
+.global-score-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+}
+.score-num {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+}
+.score-label {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-top: 3px;
+}
+
+/* ═══════════════════════════════════════════════════
+   KPI GRID (Linear bars, compact)
+   ═══════════════════════════════════════════════════ */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: -12px;
+  margin-bottom: 20px;
+}
+.accent-bar {
+  width: 3.5px;
+  height: 16px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-purple));
+  display: inline-block;
+}
+.accent-bar.bg-red { background: var(--rose); }
+.accent-bar.bg-green { background: var(--green); }
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.kpi-card-compact {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kpi-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.kpi-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kpi-score {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 800;
+}
+.kpi-progress-bar-bg {
+  width: 100%;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.kpi-progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* ═══════════════════════════════════════════════════
+   DIAGNOSIS PANEL
+   ═══════════════════════════════════════════════════ */
+.diagnosis-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+}
+.panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.panel-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+.diagnosis-stats {
+  display: flex;
+  gap: 12px;
+}
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.dot.red { background: var(--rose); }
+.dot.orange { background: var(--amber); }
+.dot.green { background: var(--green); }
+
+/* ═══════════════════════════════════════════════════
+   ACTION GRID & COLUMNS (Page 2)
+   ═══════════════════════════════════════════════════ */
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  flex: 1;
+}
+.action-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.col-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+.col-title.color-red { color: var(--rose); }
+.col-title.color-orange { color: var(--amber); }
+.issues-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.issue-card {
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.issue-card.critical {
+  background: var(--rose-bg);
+  border-color: var(--rose-bdr);
+}
+.issue-card.warning {
+  background: var(--amber-bg);
+  border-color: var(--amber-bdr);
+}
+.badge-role {
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1.5px 5px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.badge-role.red {
+  background: var(--rose-bdr);
+  color: var(--rose);
+}
+.badge-role.orange {
+  background: var(--amber-bdr);
+  color: var(--amber);
+}
+.issue-text {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.empty-notice {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.empty-notice.green {
+  background: var(--green-bg);
+  border-color: var(--green-bdr);
+  color: var(--green);
+}
+
+/* ═══════════════════════════════════════════════════
+   PASSED CONTAINER & COLUMNS (Page 3)
+   ═══════════════════════════════════════════════════ */
+.passed-container-grid {
+  flex: 1;
+  overflow: hidden;
+}
+.passed-list-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.passed-card-compact {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-bdr);
+  border-radius: var(--radius-sm);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.check-ico-green {
+  color: var(--green);
+  font-weight: 900;
+  font-size: 12px;
+  margin-top: -1px;
+}
+.passed-card-desc {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.passed-card-desc strong {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+}
+.passed-card-desc span {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+/* ═══════════════════════════════════════════════════
+   PAGE FOOTER
+   ═══════════════════════════════════════════════════ */
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  font-size: 9.5px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top: 16px;
+  box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════
+   PRINT MEDIA HARDENING
+   ═══════════════════════════════════════════════════ */
+@media print {
+  @page { size: A4 portrait; margin: 1.8cm 1.5cm; }
+  body, body.dark {
+    --bg-base:     #ffffff !important;
+    --bg-raised:   #ffffff !important;
+    --bg-card:     #ffffff !important;
+    --border:      #e2e8f0 !important;
+    --border-hi:   #cbd5e1 !important;
+    --text:        #0f172a !important;
+    --text-secondary: #334155 !important;
+    --text-muted:  #64748b !important;
+    --green-bg:    #f0fdf4 !important;
+    --green-bdr:   #bbf7d0 !important;
+    --amber-bg:    #fffbeb !important;
+    --amber-bdr:   #fef3c7 !important;
+    --rose-bg:     #fef2f2 !important;
+    --rose-bdr:    #fee2e2 !important;
+    background:    #ffffff !important;
+    color:         var(--text) !important;
+  }
+  .report-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+  .pdf-page {
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+    height: 100vh !important;
+    page-break-after: always !important;
+  }
+  .pdf-page:last-child {
+    page-break-after: avoid !important;
+  }
+  .theme-btn {
+    display: none !important;
+  }
+}

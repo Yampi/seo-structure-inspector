@@ -1,9 +1,9 @@
 <?php
 
-namespace SEOSI\Tests;
+namespace BaloaStructureAuditorSEO\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SEOSI\Core\CheckPresenter;
+use BaloaStructureAuditorSEO\Core\CheckPresenter;
 
 class CheckPresenterTest extends TestCase {
     public function test_apply_en_enriches_known_check(): void {

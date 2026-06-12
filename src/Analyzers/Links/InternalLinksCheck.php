@@ -1,11 +1,11 @@
 <?php
 /**
- * SEOSI\Analyzers\Links\InternalLinksCheck
+ * BaloaStructureAuditorSEO\Analyzers\Links\InternalLinksCheck
  * 
  * Checks internal links count and nofollow attributes.
  */
 
-namespace SEOSI\Analyzers\Links;
+namespace BaloaStructureAuditorSEO\Analyzers\Links;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -31,7 +31,7 @@ class InternalLinksCheck {
                 'id'             => 'links_internal_count',
                 'severity'       => 'warning',
                 'category'       => 'seo',
-                'message'        => "Solo {$count} enlace(s) interno(s) — recomendado minimo 3",
+                'message'        => "Solo {$count} enlace(s) interno(s) â€” recomendado minimo 3",
                 'recommendation' => 'Agrega mas enlaces internos. Un minimo de 3-5 por pagina ayuda a distribuir autoridad y mejora la indexacion por parte de los crawlers.',
                 'context'        => [ 'count' => $count ],
             ];
